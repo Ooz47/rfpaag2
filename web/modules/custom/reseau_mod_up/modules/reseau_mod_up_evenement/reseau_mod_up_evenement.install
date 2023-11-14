@@ -34,6 +34,7 @@ function reseau_mod_up_evenement_install()
     'views.view.agenda',
     'block.block.views_block__agenda_block_2',
     'block.block.views_block__agenda_block_3',
+    'core.entity_form_display.node.evenement.default',
 
   ];
 
