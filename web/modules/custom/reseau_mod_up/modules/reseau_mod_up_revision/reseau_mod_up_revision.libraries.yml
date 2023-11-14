@@ -1,0 +1,10 @@
+extra.admin:
+  js:
+    js/admin.js: {}
+  css:
+    theme:
+      css/admin.css: {}
+
+reseau_mod_up_revision:
+  dependencies:
+    - core/drupal
