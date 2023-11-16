@@ -1,3 +1,4 @@
+#version: 1.0
 name: Sous-module Formations
 description: Modification spécifiques aux formations
 package: custom

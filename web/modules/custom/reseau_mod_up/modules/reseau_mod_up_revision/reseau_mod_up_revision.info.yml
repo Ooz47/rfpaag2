@@ -1,3 +1,4 @@
+#version: 1.0
 name: Sous-module Révision
 description: Modification spécifiques aux révisions
 package: custom

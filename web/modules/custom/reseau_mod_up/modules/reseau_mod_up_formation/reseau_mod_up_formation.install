@@ -35,6 +35,7 @@ function reseau_mod_up_formation_install() {
     'core.base_field_override.node.evenement.status',
     'core.base_field_override.node.actualite.status',
     'core.base_field_override.node.formation.status',
+    'core.entity_form_display.node.contact.default',
     // 'field.field.node.formation.field_fmt_code_diplome',
     // 'field.field.node.formation.field_fmt_code_rncp',
     // 'taxonomy.vocabulary.libelles_resultats_formations',

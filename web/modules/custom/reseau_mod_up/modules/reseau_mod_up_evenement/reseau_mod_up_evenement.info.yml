@@ -1,3 +1,4 @@
+#version: 1.0
 name: Sous-module Evenement
 description: Permet d'associer un évènement à plusieurs structures
 package: custom

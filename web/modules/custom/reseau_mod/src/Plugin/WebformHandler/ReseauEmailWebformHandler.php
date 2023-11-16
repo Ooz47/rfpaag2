@@ -12,7 +12,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   id = "destinataire_formation_email",
  *   label = @Translation("Destinataires formation email"),
  *   category = @Translation("Notification"),
- *   description = @Translation("envoie les données du formulaire aux contacts indiqués sur la fiche formation."),
+ *   description = @Translation("envoie les données du formulaire aux contacts indiqués sur la fiche formation à l'exception des référents handicap."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  * )
