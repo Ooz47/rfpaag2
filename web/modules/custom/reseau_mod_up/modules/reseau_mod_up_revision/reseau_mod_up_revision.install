@@ -60,6 +60,7 @@ function reseau_mod_up_revision_install()
   // on passe par un hook_install pour mettre à jour les config déjà existantes
   $config_files = [
     'node.type.formation',
+    'node.type.evenement',
   ];
 
   foreach ($config_files as $config_id) {
