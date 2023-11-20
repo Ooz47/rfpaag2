@@ -1,0 +1,13 @@
+extra.display:
+  css:
+    theme:
+      css/blog.css: {}
+
+extra.admin:
+  css:
+    theme:
+      css/admin.css: {}
+
+reseau_mod_up_blog:
+  dependencies:
+    - core/drupal
