@@ -1,7 +1,7 @@
 body.page-node-page_de_blog .breadcrumb .container-xl,
 body.page-node-page_de_blog main .container-xl
  {
-  width:740px;
+  max-width:740px;
 }
 
 body.page-node-page_de_blog main h1, body.page-node-page_de_blog main .h1 {
@@ -19,6 +19,9 @@ padding-left: 0;
  width: 100%;
   margin-left: 0;
 
+}
+body.page-node-page_de_blog .contenuprincipal article .blazy--field-image-principale--default img{
+margin: auto;
 }
 
 body.page-node-page_de_blog .image_principale_legende {
@@ -89,4 +92,17 @@ body.page-node-page_de_blog .contenuprincipal article .lecture::before {
   content: "\f2f2";
   content: "\f252";
   font-weight: 600;
+}
+
+#block-socialsharingblock-2 .partage_disabled {
+  background-image: url(/themes/custom/reseau/css/../img/partage_disabled.png);
+  height: 62px;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-left: -55px;
+}
+
+#block-socialsharingblock-2 .social-media-sharing {
+width: 100%;
+text-align: center;
 }
