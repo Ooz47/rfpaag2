@@ -116,7 +116,14 @@
 {% set numberOfWords = text|split(' ')|length %}
  {# {{ numberOfWords}} #}
  <div class="lecture">
- {{ numberOfWords // 225}} min de lecture
+ {% set dureeTotale = numberOfWords // 285 %}
+
+ {% if dureeTotale > 1 %}
+ {{ dureeTotale }} min de lecture
+
+{% else %}
+  < 1 min de lecture
+{% endif %}
   </div>
 {# {{ kint(node.changed) }} #}
 {% set datepublication = node.getCreatedTime|format_date('short') %}

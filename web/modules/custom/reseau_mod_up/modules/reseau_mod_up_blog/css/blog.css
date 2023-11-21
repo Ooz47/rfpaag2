@@ -67,6 +67,7 @@ body.page-node-page_de_blog .mots-cles-texte div:last-child  {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 body.page-node-page_de_blog .mots-cles-texte div:last-child div {
