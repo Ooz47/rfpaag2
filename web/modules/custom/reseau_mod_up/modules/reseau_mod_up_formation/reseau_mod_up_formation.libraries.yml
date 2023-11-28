@@ -1,6 +1,6 @@
 extra.admin:
   js:
-    js/admin.js: {}
+    js/formation.js: {}
   css:
     theme:
       css/admin.css: {}

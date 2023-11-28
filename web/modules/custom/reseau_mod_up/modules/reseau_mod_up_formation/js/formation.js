@@ -3,7 +3,7 @@
     'use strict';
   
     // To understand behaviors, see https://drupal.org/node/756722#behaviors
-    Drupal.behaviors.admin = {
+    Drupal.behaviors.formation = {
       attach: function (context, settings) {
         // console.log("hello");
 
