@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.page_de_blog.body
     - field.field.node.page_de_blog.field_act_structure_concernee
+    - field.field.node.page_de_blog.field_ecrit_par
     - field.field.node.page_de_blog.field_image_principale
     - field.field.node.page_de_blog.field_image_principale_legende
     - field.field.node.page_de_blog.field_mots_cles_texte
@@ -27,7 +28,17 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 6
+    region: content
+  field_ecrit_par:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      field_formatter_class:
+        class: ecritPar
+    weight: 3
     region: content
   field_image_principale:
     type: blazy_media
@@ -74,7 +85,7 @@ content:
     third_party_settings:
       field_formatter_class:
         class: ''
-    weight: 3
+    weight: 4
     region: content
   field_image_principale_legende:
     type: basic_string
@@ -83,7 +94,7 @@ content:
     third_party_settings:
       field_formatter_class:
         class: image_principale_legende
-    weight: 4
+    weight: 5
     region: content
   field_mots_cles_texte:
     type: entity_reference_label
@@ -93,7 +104,7 @@ content:
     third_party_settings:
       field_formatter_class:
         class: mots-cles-texte
-    weight: 6
+    weight: 7
     region: content
   field_structure_associee:
     type: entity_reference_label
@@ -127,7 +138,7 @@ content:
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
 hidden:
   field_act_structure_concernee: true
