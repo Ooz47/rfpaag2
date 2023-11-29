@@ -64,7 +64,16 @@ function reseau_mod_up_evenement_form_alter(&$form, \Drupal\Core\Form\FormStateI
 
   if (($form_id === 'node_evenement_edit_form') || ($form_id === 'node_evenement_form')) {
 
-
+    $form['field_act_acc_structure']['#states'] = [
+      'invisible' => [
+        ':input[name="field_structure_associee"]' => ['value' => '8'],
+      ],
+    ];
+    $form['field_act_acc_reseau']['#states'] = [
+      'invisible' => [
+        ':input[name="field_structure_associee"]' => ['value' => '8'],
+      ],
+    ];
   
    
     $form['field_act_structure_concernee']['#states'] = [
@@ -90,6 +99,9 @@ function reseau_mod_up_evenement_views_pre_view(ViewExecutable $view, $display_i
  
   
   if ($view->id() == 'agenda' && $display_id =="block_3") {
+
+
+
   
     $node = \Drupal::routeMatch()->getParameter('node');
     //si on accede à un node: page,actus,evenement,contact,formaation,témoignage

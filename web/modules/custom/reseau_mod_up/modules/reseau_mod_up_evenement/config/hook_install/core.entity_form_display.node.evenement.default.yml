@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.node.evenement.body
+    - field.field.node.evenement.field_act_acc_reseau
+    - field.field.node.evenement.field_act_acc_structure
     - field.field.node.evenement.field_act_structure_concernee
     - field.field.node.evenement.field_date_evenement
     - field.field.node.evenement.field_image_principale
@@ -29,6 +31,18 @@ content:
       summary_rows: 3
       placeholder: ''
       show_summary: false
+    third_party_settings: {  }
+  field_act_acc_reseau:
+    type: options_buttons
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_act_acc_structure:
+    type: options_buttons
+    weight: 11
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_act_structure_concernee:
     type: options_buttons

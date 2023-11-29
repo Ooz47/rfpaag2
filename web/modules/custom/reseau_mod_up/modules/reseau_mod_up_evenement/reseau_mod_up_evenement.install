@@ -35,6 +35,7 @@ function reseau_mod_up_evenement_install()
     'block.block.views_block__agenda_block_2',
     'block.block.views_block__agenda_block_3',
     'core.entity_form_display.node.evenement.default',
+    'core.entity_view_display.node.evenement.default',
 
   ];
 
@@ -65,4 +66,13 @@ function reseau_mod_up_evenement_uninstall()
     // dsm(Yaml::decode($raw_data));
       }
   
+}
+
+function reseau_mod_up_evenement_update_8001() {
+  $evenements = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'evenement']);
+  foreach ($evenements as $evenement) {
+    $evenement->set('field_act_acc_structure', TRUE);
+    $evenement->set('field_act_acc_reseau', TRUE);
+    $evenement->save();
+  }
 }
