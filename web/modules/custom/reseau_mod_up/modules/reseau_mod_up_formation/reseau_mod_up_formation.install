@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update functions for menu_admin_per_menu module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+// function reseau_mod_up_formation_install() {
+//   // Set module weight bigger than menu_ui module.
+//   module_set_weight('reseau_mod_up_formation', 3);
+// }
+
+
+use Drupal\Component\Serialization\Yaml;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_install().
+ */
+function reseau_mod_up_formation_install() {
+  module_set_weight('reseau_mod_up_formation', 3);
+
+  // Replace these configs.  We're using code to do this, as they are already
+  // installed.
+  $config_files = [
+    
+    'core.entity_form_display.paragraph.resultats_formation.default',
+    'field.field.node.formation.field_formacode',
+    'core.entity_form_display.node.formation.default',
+    'core.entity_view_display.node.formation.default',
+    'core.base_field_override.node.page.status',
+    'core.base_field_override.node.evenement.status',
+    'core.base_field_override.node.actualite.status',
+    'core.base_field_override.node.formation.status',
+    'core.entity_form_display.node.contact.default',
+    // 'field.field.node.formation.field_fmt_code_diplome',
+    // 'field.field.node.formation.field_fmt_code_rncp',
+    // 'taxonomy.vocabulary.libelles_resultats_formations',
+  ];
+
+  foreach ($config_files as $config_id) {
+    $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_formation') . '/config/hook_install/' . $config_id . '.yml');
+    \Drupal::service('config.factory')->getEditable($config_id)
+      ->setData(Yaml::decode($raw_data))
+      ->save();
+  // dsm(Yaml::decode($raw_data));
+    }
+
+    reseau_mod_up_formation_update_8001();
+}
+
+function reseau_mod_up_formation_uninstall() {
+  // $config_files_todelete = [
+  //   'field.field.node.formation.field_fmt_code_diplome',
+  //   // 'core.entity_form_display.paragraph.resultats_formation.default',
+  //   // 'field.field.node.formation.field_formacode',
+  //   'field.field.node.formation.field_fmt_code_rncp',
+  // ];
+
+  $config_files_torestore = [
+    'core.entity_form_display.paragraph.resultats_formation.default',
+    //a voir si on restaure toutes les configs modifiées
+  ];
+
+  foreach ($config_files_torestore as $config_id) {
+    $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_formation') . '/config/hook_restore/' . $config_id . '.yml');
+    \Drupal::service('config.factory')->getEditable($config_id)
+      ->setData(Yaml::decode($raw_data))
+      ->save();
+  // dsm(Yaml::decode($raw_data));
+    }
+}
+
+
+function reseau_mod_up_formation_update_8001() {
+  // Machine name of the Taxonomy vocabulary.
+  $vocab = 'libelles_resultats_formations';
+
+  // Term names to be added.
+  $items = [
+    'Taux d\'insertion',
+    'Taux de réussite',
+    'Taux de rupture',
+    'Taux de satisfaction',
+    'Taux d’abandon',
+  ];
+  foreach ($items as $item) {
+    $term = Term::create(array(
+      'parent' => array(),
+      'name' => $item,
+      'vid' => $vocab,
+    ))->save();
+  }
+}

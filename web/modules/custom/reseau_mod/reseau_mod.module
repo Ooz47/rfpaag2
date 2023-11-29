@@ -422,7 +422,9 @@ function get_contacts_formation($formationid)
       $contact = \Drupal::entityTypeManager()->getStorage('node')->load($contact_id['target_id']);
 
       if (!empty($contact->field_ctc_email->value)) {
+        if ((empty($contact->field_ctc_ref_handicap->value) ) || ((!empty($contact->field_ctc_ref_handicap->value)) && ($contact->field_ctc_ref_handicap->value != 1 ))) {
         $destinataires[] = $contact->field_ctc_email->value;
+      }
       }
     }
   }
