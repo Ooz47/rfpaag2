@@ -38,7 +38,7 @@ AddEncoding gzip svgz
   ExpiresActive On
 
   # Cache all files for 2 weeks after access (A).
-  # ExpiresDefault A1209600
+# ExpiresDefault A1209600
   ExpiresDefault A31536000
 
   <FilesMatch \.php$>
@@ -111,7 +111,7 @@ AddEncoding gzip svgz
   # VirtualDocumentRoot and the rewrite rules are not working properly.
   # For example if your site is at http://example.com/drupal uncomment and
   # modify the following line:
-  # RewriteBase /rfpaag-test
+  # RewriteBase /drupal
   #
   # If your site is running in a VirtualDocumentRoot at http://example.com/,
   # uncomment the following line:
