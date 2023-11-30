@@ -25,12 +25,14 @@
         "drupal/chosen": "^3.0",
         "drupal/colorbox": "^1.7",
         "drupal/config_update": "^1.7",
+        "drupal/content_lock": "^2.3",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-project-message": "^9.1",
         "drupal/core-recommended": "^9.1",
         "drupal/cshs": "^3.5",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editor_advanced_link": "^2.0",
+        "drupal/entity_access_password": "^1.0",
         "drupal/entity_browser": "^2.6",
         "drupal/field_formatter_class": "^1.5",
         "drupal/field_group": "^3.1",
@@ -71,13 +73,25 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
+            "mnsami/composer-custom-directory-installer": true
+        }
     },
     "extra": {
         "enable-patching": true,
         "patches": {
             "drupal/shs": {
                 "Intégration avec search_api": "https://www.drupal.org/files/issues/2019-01-31/shs-provide-search-api-support-D8.patch"
+            },
+            "drupal/content_lock": {
+                "Débloquer verrou en quittant la page": "./patches/content_lock-unlocking-3160781-37.patch",
+                "Disable champ CKE v4 si vérouillé": "./patches/content_lock-cke-3396683-2.patch",
+                "Disable champ chosen si verrouillé": "./patches/content_lock-cke-chosen-field.patch"
             }
          },
         "drupal-scaffold": {
