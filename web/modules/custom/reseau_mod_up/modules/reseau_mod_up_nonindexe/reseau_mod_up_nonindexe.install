@@ -2,34 +2,21 @@
 
 /**
  * @file
- * Contains install and update functions for menu_admin_per_menu module.
+ * Contains install and update functions for reseau_mod_up_nonindexe module.
  */
-
-/**
- * Implements hook_install().
- */
-// function reseau_mod_up_formation_install() {
-//   // Set module weight bigger than menu_ui module.
-//   module_set_weight('reseau_mod_up_formation', 3);
-// }
 
 
 use Drupal\Component\Serialization\Yaml;
-use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_install().
  */
-
-
 
 function reseau_mod_up_nonindexe_install()
 {
   module_set_weight('reseau_mod_up_nonindexe', 3);
 
-
   $config_files = [
-    
     'core.entity_form_display.node.page.default',
     'core.entity_view_display.node.page.default',
   ];
@@ -39,7 +26,7 @@ function reseau_mod_up_nonindexe_install()
     \Drupal::service('config.factory')->getEditable($config_id)
       ->setData(Yaml::decode($raw_data))
       ->save();
-  // dsm(Yaml::decode($raw_data));
+
     }
 
 }
