@@ -1,6 +1,6 @@
 #version: 1.0
 name: Sous-module Blocage d'édition simultanée
-description: Permet de bloquer les modifications des contenus formations par un autre utilisateurs
+description: Permet de bloquer les contenus formations en cours de modification pour les autres utilisateurs
 package: custom
 type: module
 core_version_requirement: ^9

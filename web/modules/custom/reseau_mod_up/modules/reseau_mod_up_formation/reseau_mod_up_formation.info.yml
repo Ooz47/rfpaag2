@@ -1,6 +1,6 @@
 #version: 1.0
 name: Sous-module Formations
-description: Modification spécifiques aux formations
+description: Modification spécifiques aux type de contenus formations
 package: custom
 type: module
 core_version_requirement: ^9
