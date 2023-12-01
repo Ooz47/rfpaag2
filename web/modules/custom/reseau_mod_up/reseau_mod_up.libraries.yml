@@ -1,9 +1,7 @@
-# extra.admin:
-  # js:
-    # js/admin.js: {}
-  # css:
-    # theme:
-      # css/admin.css: {}
+extra.adminreseauup:
+  css:
+    theme:
+      css/adminreseauup.css: {}
 
 reseau_mod_up:
   dependencies:

@@ -22,8 +22,8 @@
 // }
 
 
-// function reseau_mod_up_page_attachments_alter(array &$attachments)
-// {
+function reseau_mod_up_page_attachments_alter(array &$attachments)
+{
 
 //   /*ajoute css admin*/
 //   $admin_theme = \Drupal::config('system.theme')->get('admin');
@@ -32,4 +32,6 @@
 //     $attachments['#attached']['library'][] = 'reseau_mod_up/extra.admin';
 //   }
 
-// }
+$attachments['#attached']['library'][] = 'reseau_mod_up/extra.adminreseauup';
+
+}
