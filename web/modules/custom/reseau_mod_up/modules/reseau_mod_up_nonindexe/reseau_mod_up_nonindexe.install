@@ -16,6 +16,7 @@ function reseau_mod_up_nonindexe_install()
 {
   module_set_weight('reseau_mod_up_nonindexe', 3);
 
+  /*
   $config_files = [
     'core.entity_form_display.node.page.default',
     'core.entity_view_display.node.page.default',
@@ -27,7 +28,7 @@ function reseau_mod_up_nonindexe_install()
       ->setData(Yaml::decode($raw_data))
       ->save();
 
-    }
+    }*/
 
 }
 

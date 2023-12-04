@@ -1,0 +1,16 @@
+.entity-access-password-password #edit-submit {
+    margin: 10px auto;
+    width: auto;
+    background: #009e99;
+    color: #fff;
+    border: 0px solid #ced4da;
+}
+
+.entity-access-password-password .form-item-form-password {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:60%;
+    margin: auto;
+}

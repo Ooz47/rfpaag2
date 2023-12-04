@@ -1,3 +1,4 @@
+uuid: 358029aa-4372-42be-8640-b08eab2fec49
 langcode: fr
 status: true
 dependencies:
@@ -7,7 +8,7 @@ dependencies:
     - field.field.paragraph.resultats_formation.field_valeur_resultat
     - paragraphs.paragraphs_type.resultats_formation
   module:
-    - reseau_up_mod
+    - reseau_mod_up
 id: paragraph.resultats_formation.default
 targetEntityType: paragraph
 bundle: resultats_formation

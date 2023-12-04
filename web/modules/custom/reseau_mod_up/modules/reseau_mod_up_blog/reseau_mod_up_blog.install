@@ -61,7 +61,7 @@ function reseau_mod_up_blog_install()
 {
   module_set_weight('reseau_mod_up_blog', 3);
 
-
+/*
   $config_files = [
     'block.block.navigationprincipale',
     'block.block.reseau_page_title',
@@ -92,7 +92,7 @@ function reseau_mod_up_blog_install()
 
     $role_object->save();
   }
-
+*/
 }
 
 

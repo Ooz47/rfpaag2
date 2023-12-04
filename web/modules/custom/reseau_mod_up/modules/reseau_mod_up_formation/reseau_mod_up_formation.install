@@ -22,7 +22,7 @@ use Drupal\taxonomy\Entity\Term;
  */
 function reseau_mod_up_formation_install() {
   module_set_weight('reseau_mod_up_formation', 3);
-
+/*
   // Replace these configs.  We're using code to do this, as they are already
   // installed.
   $config_files = [
@@ -48,7 +48,7 @@ function reseau_mod_up_formation_install() {
       ->save();
   // dsm(Yaml::decode($raw_data));
     }
-
+ */
     reseau_mod_up_formation_update_8001();
 }
 
@@ -59,7 +59,7 @@ function reseau_mod_up_formation_uninstall() {
   //   // 'field.field.node.formation.field_formacode',
   //   'field.field.node.formation.field_fmt_code_rncp',
   // ];
-
+/*
   $config_files_torestore = [
     'core.entity_form_display.paragraph.resultats_formation.default',
     //a voir si on restaure toutes les configs modifiées
@@ -71,7 +71,7 @@ function reseau_mod_up_formation_uninstall() {
       ->setData(Yaml::decode($raw_data))
       ->save();
   // dsm(Yaml::decode($raw_data));
-    }
+    }*/
 }
 
 

@@ -32,6 +32,7 @@ function reseau_mod_up_blocageEdition_install()
 {
   module_set_weight('reseau_mod_up_blocageEdition', 3);
 
+  /*
   $config_files = [
     'content_lock.settings',
     'content_lock_timeout.settings',
@@ -50,5 +51,5 @@ function reseau_mod_up_blocageEdition_install()
     $role_object = Role::load($roletoGrant);
     $role_object->grantPermission('break content lock');
     $role_object->save();
-  }
+  }*/
 }

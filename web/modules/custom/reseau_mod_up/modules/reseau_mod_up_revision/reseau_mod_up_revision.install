@@ -57,7 +57,8 @@ return [$permissionstoGrant, $rolestoGrant ];
 function reseau_mod_up_revision_install()
 {
   module_set_weight('reseau_mod_up_revision', 3);
-  // on passe par un hook_install pour mettre à jour les config déjà existantes
+  
+  /*// on passe par un hook_install pour mettre à jour les config déjà existantes
   $config_files = [
     'node.type.formation',
     'node.type.evenement',
@@ -83,12 +84,13 @@ function reseau_mod_up_revision_install()
 
     $role_object->save();
   }
+  */
 }
 
 
 function reseau_mod_up_revision_uninstall()
 {
-  [$permissionstoGrant,$rolestoGrant] =  getData();
+/*  [$permissionstoGrant,$rolestoGrant] =  getData();
   
   foreach ($rolestoGrant as $roletoGrant) {
 
@@ -101,4 +103,5 @@ function reseau_mod_up_revision_uninstall()
 
     $role_object->save();
   }
+  */
 }

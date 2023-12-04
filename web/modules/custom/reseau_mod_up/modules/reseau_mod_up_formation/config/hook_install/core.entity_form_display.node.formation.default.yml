@@ -1,3 +1,4 @@
+uuid: 6ebe1bc0-17ec-49a9-b85b-90fd51cdc6c5
 langcode: fr
 status: true
 dependencies:
@@ -22,7 +23,6 @@ dependencies:
     - field.field.node.formation.field_fmt_contacts
     - field.field.node.formation.field_fmt_grand_champ
     - field.field.node.formation.field_fmt_information
-    - field.field.node.formation.field_fmt_modalites_delais
     - field.field.node.formation.field_fmt_pole_greta_gp
     - field.field.node.formation.field_fmt_type_accompagnement
     - field.field.node.formation.field_formacode
