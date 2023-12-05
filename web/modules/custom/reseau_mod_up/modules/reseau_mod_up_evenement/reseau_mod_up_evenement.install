@@ -47,7 +47,7 @@ function reseau_mod_up_evenement_install()
   // dsm(Yaml::decode($raw_data));
     }
 */
-reseau_mod_up_evenement_update_8001();
+// reseau_mod_up_evenement_update_8001();
 }
 
 
