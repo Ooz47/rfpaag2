@@ -1772,7 +1772,9 @@ span.bleu {
 
 .resultats,
 .profil,
-.temoignagesconteneur header {
+.temoignagesconteneur header,
+.blogconteneur header,
+ {
 
   h2 {
     text-align: center;
@@ -1946,6 +1948,48 @@ span.bleu {
       // .tmg_message {}
 
     }
+  }
+}
+
+
+/*********************************************************************************************/
+/*BLOG*/
+
+
+.blogconteneur {
+  &::before {
+    content: "";
+    left: 5%;
+    height: 2px;
+    // bottom: -15%;
+    width: 90%;
+    position: absolute;
+    background: radial-gradient(ellipse at center, rgba(0, 158, 153, 0.5) 0%, rgba(0, 0, 0, 0) 50%);
+    position: absolute;
+  }
+
+  .actualites-view {
+    // margin-bottom: 6rem;
+    position: relative;
+    padding: 50px 0 50px;
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+h2, .h2 {
+      margin: 0 0 3rem 0;
+  }
+    .slick {
+      margin-top: 70px;
+
+      @media (min-width: 992px) {
+        .views-field-nothing .row {
+          padding: 0rem 1.5rem;
+    
+         }
+      }
+
+   
+    }
+    
   }
 }
 
