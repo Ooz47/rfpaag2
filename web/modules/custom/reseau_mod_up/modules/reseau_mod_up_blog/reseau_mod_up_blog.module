@@ -3,6 +3,16 @@
 use Drupal\pathauto\Entity\PathautoPattern;
 use Drupal\views\ViewExecutable;
 
+
+/**
+* Implements hook_views_pre_render().
+*/
+function reseau_mod_up_blog_views_pre_render(ViewExecutable $view) {
+  // dsm($view->storage->id());
+  if (isset($view) && ($view->storage->id() == 'blog')) {
+    $view->element['#attached']['library'][] = 'reseau_mod_up_blog/extra.blogview';
+  }
+}
 /**
  * @file
  * Contains reseau_mod_up_blog.module.
@@ -60,18 +70,6 @@ function reseau_mod_up_blog_theme_suggestions_page_alter(array &$suggestions, ar
   }
 }
 
-// function reseau_mod_up_blog_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-
-//   if ($hook == 'page') {
-//   if ($node = \Drupal::routeMatch()->getParameter('node')) {
-//     // dsm($node);
-//     // dsm($hook);
-//     // dsm($variables);
-
-//     // $suggestions[] = 'page__' . $node->bundle();
-//   }
-// }
-// }
 
 //Renseigne valeur par défault du champ structure associée à la création d'un node, en fonction de l'utilisateur courant
 function reseau_mod_up_blog_node_field_values_init(\Drupal\Core\Entity\FieldableEntityInterface $entity)
@@ -82,45 +80,6 @@ function reseau_mod_up_blog_node_field_values_init(\Drupal\Core\Entity\Fieldable
   }
 }
 
-// function reseau_mod_up_blog_page_attachments_alter(array &$attachments)
-// {
-
-//   /*ajoute css admin*/
-//   $admin_theme = \Drupal::config('system.theme')->get('admin');
-//   $admin_theme_name = \Drupal::service('theme_handler')->getName($admin_theme);
-//   if ($admin_theme_name == 'Seven') {
-//     $attachments['#attached']['library'][] = 'reseau_mod_up_blog/extra.agenda';
-//   }
-
-// }
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-
-//  function reseau_mod_up_blog_theme_suggestions_agenda(array $variables) {
-//   $suggestions = [];
-
-//   $suggestions[] = 'evenement__agenda';
-
-//   return $suggestions;
-// }
-
-//  function reseau_mod_up_blog_theme($existing, $type, $theme, $path)
-//  {
-//      return array(
-//          'block__views_block__agenda_block_3' => array(
-//              'variables' => array(),
-//              'template' => 'block--views-block--agenda-block-3',
-//          )
-//      );
-//  }
-//  function reseau_mod_up_blog_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-//   // dsm($suggestions);
-//   if(in_array('block--views-block--agenda-block-3', $suggestions)){
-//       $suggestions[] = 'block__views_block__agenda_block_3';
-//   }
-// }
 
 //Modification des formulaire
 function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
@@ -136,7 +95,16 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
       $form['index_now']['#access'] = FALSE;
     }
 
-
+    $form['field_act_acc_structure']['#states'] = [
+      'invisible' => [
+        ':input[name="field_structure_associee"]' => ['value' => '8'],
+      ],
+    ];
+    $form['field_act_acc_reseau']['#states'] = [
+      'invisible' => [
+        ':input[name="field_structure_associee"]' => ['value' => '8'],
+      ],
+    ];
     $form['field_act_structure_concernee']['#states'] = [
       'visible' => [
         ':input[name="field_structure_associee"]' => ['value' => '8'],
@@ -158,6 +126,11 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
     }
 
     get_autorisation_access();
+
+    if (isset($form['field_act_epingle']['widget'])) {
+      // $form['field_act_epingle']['widget']['#access'] = false;
+      $form['field_act_epingle']['#attributes']['class'][] = 'hidden';
+    }
     $form['field_structure_associee']['widget']['#disabled'] = TRUE;
   }
 
@@ -218,50 +191,61 @@ function reseau_mod_up_blog_pathauto_pattern_alter(PathautoPattern &$pattern, ar
 }
 
 
-
-// /*REtire bulk operations sur page addin media*/
-// function reseau_mod_up_blog_views_pre_view(ViewExecutable $view, $display_id, array &$args)
-// {
+/* Remplace filter de view en fonction de la structure en cours de visionnage */
+function reseau_mod_up_blog_views_pre_view(ViewExecutable $view, $display_id, array &$args)
+{
  
+  if ($view->id() == 'blog' && ($display_id =="block_2" || $display_id =="block_4")) {
   
-//   if ($view->id() == 'agenda' && $display_id =="block_3") {
-  
-//     $node = \Drupal::routeMatch()->getParameter('node');
-//     //si on accede à un node: page,actus,evenement,contact,formaation,témoignage
-//     if ($node instanceof \Drupal\node\NodeInterface) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    //si on accede à un node: page,actus,evenement,contact,formation,témoignage
+    if ($node instanceof \Drupal\node\NodeInterface) {
 
-//       if ((doesBundleHaveField($node->getEntityTypeId(), $node->bundle(), 'field_structure_associee')) && (!empty($node->get('field_structure_associee')->getValue()))) {
-//         $structureid = $node->get('field_structure_associee')->getValue();
+      if ((doesBundleHaveField($node->getEntityTypeId(), $node->bundle(), 'field_structure_associee')) && (!empty($node->get('field_structure_associee')->getValue()))) {
+        $structureid = $node->get('field_structure_associee')->getValue();
+   
+        $filters = $view->getDisplay()->getOption('filters');
+              
+        if ( $display_id =="block_2") {
+          // On met à jour les filtres selon structure vue
+          $filters["field_structure_associee_target_id"]["value"] = [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
+          $filters["field_act_structure_concernee_target_id"]["value"] =  [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
+          $view->display_handler->overrideOption('filters', $filters);
+         
+          $options = array(
+            'id' => 'area_text_custom',
+            'table' => 'views',
+            'field' => 'area_text_custom',
+            'relationship' => 'none',
+            'group_type' => 'none',
+            'admin_label' => '',
+            'empty' => TRUE,
+            'tokenize' => FALSE,
+            'content' => "<h2><span class=\"bleu\">".$node->getTitle()."</span> Blog</h2>",
+            // 'content' => "<h2><span class=\"bleu\">".$term->getName()."</span> Actualité</h2>",
+            'plugin_id' => 'text_custom',
+          );
+          
+          $view->setHandler('block_2', 'header', 'area_text_custom', $options);
+        }
+
+        } else {
+          //display 4 : a lire aussi
+        if($structureid[0]['target_id'] != '8'){
+          //Si sur page de blog associé à autre que réseau, on mets à jours les filtres
+          // sinon on conserve tous les résultats
+          $filters["field_structure_associee_target_id"]["value"] = [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
+          $filters["field_act_structure_concernee_target_id"]["value"] =  [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
+          $view->display_handler->overrideOption('filters', $filters);
         
-//         $filters = $view->getDisplay()->getOption('filters'); 
-//         // dsm($filters);
-//         $filters["field_structure_associee_target_id"]["value"] = [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
-//         $filters["field_act_structure_concernee_target_id"]["value"] =  [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
-//        //  dsm($filters["field_act_structure_concerne_target_id"]["value"]);
-//       //  dsm($filters);
-//         $view->display_handler->overrideOption('filters', $filters);
- 
-//         // dsm($view);
-//        $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($structureid[0]['target_id']);
-//       // dsm( $view);
+        }
+      }
 
-//        $options = array(
-//         'id' => 'area_text_custom',
-//         'table' => 'views',
-//         'field' => 'area_text_custom',
-//         'relationship' => 'none',
-//         'group_type' => 'none',
-//         'admin_label' => '',
-//         'empty' => TRUE,
-//         'tokenize' => FALSE,
-//         'content' => "<h2><span class=\"bleu\">".$node->getTitle()."</span> Agenda</h2>",
-//         // 'content' => "<h2><span class=\"bleu\">".$term->getName()."</span> Actualité</h2>",
-//         'plugin_id' => 'text_custom',
-//       );
-//       $view->setHandler('block_3', 'header', 'area_text_custom', $options);
+        
+//  dsm($filters);
+      //  $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($structureid[0]['target_id']);
 
-//       }  
-//     }
-// }
-// }
-
+  
+    }
+}
+}
