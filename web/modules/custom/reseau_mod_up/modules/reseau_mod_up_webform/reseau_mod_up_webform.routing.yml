@@ -1,0 +1,21 @@
+reseau_mod_up_webform.webform_submission_marquertraite:
+  path: '/admin/reseau_mod_up_webform/submission/{submission}/marquerTraite'
+  defaults:
+    _controller: '\Drupal\reseau_mod_up_webform\Controller\WebformSubmissionChangerStatutController::marquerTraite'
+  options:
+    parameters:
+      submission:
+        type: 'entity:webform_submission'
+  requirements:
+    _custom_access: '\Drupal\reseau_mod_up_webform\Controller\WebformSubmissionChangerStatutController::access'
+
+reseau_mod_up_webform.webform_submission_marquerencours:
+  path: '/admin/reseau_mod_up_webform/submission/{submission}/marquerEncours'
+  defaults:
+    _controller: '\Drupal\reseau_mod_up_webform\Controller\WebformSubmissionChangerStatutController::marquerEncours'
+  options:
+    parameters:
+      submission:
+        type: 'entity:webform_submission'
+  requirements:
+    _custom_access: '\Drupal\reseau_mod_up_webform\Controller\WebformSubmissionChangerStatutController::access'

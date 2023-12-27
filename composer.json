@@ -65,6 +65,7 @@
         "drupal/twig_tweak": "^3.1",
         "drupal/views_conditional": "^1.4",
         "drupal/webform": "^6.0.5",
+        "drupal/webform_views": "^5.2",
         "mnsami/composer-custom-directory-installer": "^2.0"
     },
     "conflict": {

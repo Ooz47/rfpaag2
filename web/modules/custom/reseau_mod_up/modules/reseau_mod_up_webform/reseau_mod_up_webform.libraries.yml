@@ -1,0 +1,12 @@
+extra.webformcustom:
+  js:
+    js/webform-custom.js: {}
+
+extra.webform:
+  css:
+    theme:
+      css/webform-back.css: {}
+
+reseau_mod_up_webform:
+  dependencies:
+    - core/drupal
