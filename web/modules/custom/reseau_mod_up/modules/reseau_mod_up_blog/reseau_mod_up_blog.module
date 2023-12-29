@@ -3,7 +3,6 @@
 use Drupal\pathauto\Entity\PathautoPattern;
 use Drupal\views\ViewExecutable;
 
-<<<<<<< HEAD
 
 /**
 * Implements hook_views_pre_render().
@@ -14,8 +13,6 @@ function reseau_mod_up_blog_views_pre_render(ViewExecutable $view) {
     $view->element['#attached']['library'][] = 'reseau_mod_up_blog/extra.blogview';
   }
 }
-=======
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 /**
  * @file
  * Contains reseau_mod_up_blog.module.
@@ -73,21 +70,6 @@ function reseau_mod_up_blog_theme_suggestions_page_alter(array &$suggestions, ar
   }
 }
 
-<<<<<<< HEAD
-=======
-// function reseau_mod_up_blog_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-
-//   if ($hook == 'page') {
-//   if ($node = \Drupal::routeMatch()->getParameter('node')) {
-//     // dsm($node);
-//     // dsm($hook);
-//     // dsm($variables);
-
-//     // $suggestions[] = 'page__' . $node->bundle();
-//   }
-// }
-// }
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 
 //Renseigne valeur par défault du champ structure associée à la création d'un node, en fonction de l'utilisateur courant
 function reseau_mod_up_blog_node_field_values_init(\Drupal\Core\Entity\FieldableEntityInterface $entity)
@@ -98,48 +80,6 @@ function reseau_mod_up_blog_node_field_values_init(\Drupal\Core\Entity\Fieldable
   }
 }
 
-<<<<<<< HEAD
-=======
-// function reseau_mod_up_blog_page_attachments_alter(array &$attachments)
-// {
-
-//   /*ajoute css admin*/
-//   $admin_theme = \Drupal::config('system.theme')->get('admin');
-//   $admin_theme_name = \Drupal::service('theme_handler')->getName($admin_theme);
-//   if ($admin_theme_name == 'Seven') {
-//     $attachments['#attached']['library'][] = 'reseau_mod_up_blog/extra.agenda';
-//   }
-
-// }
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-
-//  function reseau_mod_up_blog_theme_suggestions_agenda(array $variables) {
-//   $suggestions = [];
-
-//   $suggestions[] = 'evenement__agenda';
-
-//   return $suggestions;
-// }
-
-//  function reseau_mod_up_blog_theme($existing, $type, $theme, $path)
-//  {
-//      return array(
-//          'block__views_block__agenda_block_3' => array(
-//              'variables' => array(),
-//              'template' => 'block--views-block--agenda-block-3',
-//          )
-//      );
-//  }
-//  function reseau_mod_up_blog_theme_suggestions_alter(array &$suggestions, array $variables, $hook) {
-//   // dsm($suggestions);
-//   if(in_array('block--views-block--agenda-block-3', $suggestions)){
-//       $suggestions[] = 'block__views_block__agenda_block_3';
-//   }
-// }
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 
 //Modification des formulaire
 function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
@@ -155,7 +95,6 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
       $form['index_now']['#access'] = FALSE;
     }
 
-<<<<<<< HEAD
     $form['field_act_acc_structure']['#states'] = [
       'invisible' => [
         ':input[name="field_structure_associee"]' => ['value' => '8'],
@@ -166,9 +105,6 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
         ':input[name="field_structure_associee"]' => ['value' => '8'],
       ],
     ];
-=======
-
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     $form['field_act_structure_concernee']['#states'] = [
       'visible' => [
         ':input[name="field_structure_associee"]' => ['value' => '8'],
@@ -180,32 +116,23 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
     }
 
     $user = \Drupal::currentUser();
-<<<<<<< HEAD
     if($form_id === 'node_page_de_blog_edit_form') {
-=======
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     if ($user->hasPermission('gerer les revisions')) {
 
       $form['revision']['#access'] = TRUE;
       $form['revision_log']['#access'] = TRUE;
     }
-<<<<<<< HEAD
   }
-=======
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     if (\Drupal::currentUser()->hasPermission('modifier structure associee')) {
       return;
     }
 
     get_autorisation_access();
-<<<<<<< HEAD
 
     if (isset($form['field_act_epingle']['widget'])) {
       // $form['field_act_epingle']['widget']['#access'] = false;
       $form['field_act_epingle']['#attributes']['class'][] = 'hidden';
     }
-=======
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     $form['field_structure_associee']['widget']['#disabled'] = TRUE;
   }
 
@@ -266,7 +193,6 @@ function reseau_mod_up_blog_pathauto_pattern_alter(PathautoPattern &$pattern, ar
 }
 
 
-<<<<<<< HEAD
 /* Remplace filter de view en fonction de la structure en cours de visionnage */
 function reseau_mod_up_blog_views_pre_view(ViewExecutable $view, $display_id, array &$args)
 {
@@ -325,52 +251,3 @@ function reseau_mod_up_blog_views_pre_view(ViewExecutable $view, $display_id, ar
     }
 }
 }
-=======
-
-// /*REtire bulk operations sur page addin media*/
-// function reseau_mod_up_blog_views_pre_view(ViewExecutable $view, $display_id, array &$args)
-// {
- 
-  
-//   if ($view->id() == 'agenda' && $display_id =="block_3") {
-  
-//     $node = \Drupal::routeMatch()->getParameter('node');
-//     //si on accede à un node: page,actus,evenement,contact,formaation,témoignage
-//     if ($node instanceof \Drupal\node\NodeInterface) {
-
-//       if ((doesBundleHaveField($node->getEntityTypeId(), $node->bundle(), 'field_structure_associee')) && (!empty($node->get('field_structure_associee')->getValue()))) {
-//         $structureid = $node->get('field_structure_associee')->getValue();
-        
-//         $filters = $view->getDisplay()->getOption('filters'); 
-//         // dsm($filters);
-//         $filters["field_structure_associee_target_id"]["value"] = [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
-//         $filters["field_act_structure_concernee_target_id"]["value"] =  [$structureid[0]['target_id'] => (int)$structureid[0]['target_id']];
-//        //  dsm($filters["field_act_structure_concerne_target_id"]["value"]);
-//       //  dsm($filters);
-//         $view->display_handler->overrideOption('filters', $filters);
- 
-//         // dsm($view);
-//        $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($structureid[0]['target_id']);
-//       // dsm( $view);
-
-//        $options = array(
-//         'id' => 'area_text_custom',
-//         'table' => 'views',
-//         'field' => 'area_text_custom',
-//         'relationship' => 'none',
-//         'group_type' => 'none',
-//         'admin_label' => '',
-//         'empty' => TRUE,
-//         'tokenize' => FALSE,
-//         'content' => "<h2><span class=\"bleu\">".$node->getTitle()."</span> Agenda</h2>",
-//         // 'content' => "<h2><span class=\"bleu\">".$term->getName()."</span> Actualité</h2>",
-//         'plugin_id' => 'text_custom',
-//       );
-//       $view->setHandler('block_3', 'header', 'area_text_custom', $options);
-
-//       }  
-//     }
-// }
-// }
-
->>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6

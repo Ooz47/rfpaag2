@@ -21,3 +21,4 @@ function reseau_mod_up_blocageedition_page_attachments_alter(array &$attachments
         }
     }
 }
+
