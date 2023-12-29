@@ -9,6 +9,20 @@ use Drupal\Component\Serialization\Yaml;
 use Drupal\user\Entity\Role;
 
 
+function getRoles()
+{
+  //Liste des roles
+  $rolestoGrant = [
+    'webmaster_cfapag',
+    'webmaster_greta_guadeloupe',
+    'webmaster_gipdaifi',
+    'webmaster_greta_sxmsbh',
+    'webmaster_cfasbh',
+    'webmaster_reseau'
+  ];
+
+  return  $rolestoGrant;
+}
 
 /**
  * Implements hook_install().
@@ -18,4 +32,24 @@ function reseau_mod_up_blocageedition_install()
 {
   module_set_weight('reseau_mod_up_blocageedition', 3);
 
+  /*
+  $config_files = [
+    'content_lock.settings',
+    'content_lock_timeout.settings',
+  ];
+
+  foreach ($config_files as $config_id) {
+    $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_blocageedition') . '/config/hook_install/' . $config_id . '.yml');
+    \Drupal::service('config.factory')->getEditable($config_id)
+      ->setData(Yaml::decode($raw_data))
+      ->save();
+  }
+
+  $rolestoGrant =  getRoles();
+
+  foreach ($rolestoGrant as $roletoGrant) {
+    $role_object = Role::load($roletoGrant);
+    $role_object->grantPermission('break content lock');
+    $role_object->save();
+  }*/
 }
