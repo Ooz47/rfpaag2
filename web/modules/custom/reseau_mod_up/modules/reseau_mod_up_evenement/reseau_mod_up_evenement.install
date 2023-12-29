@@ -8,10 +8,6 @@
 /**
  * Implements hook_install().
  */
-// function reseau_mod_up_formation_install() {
-//   // Set module weight bigger than menu_ui module.
-//   module_set_weight('reseau_mod_up_formation', 3);
-// }
 
 
 use Drupal\Component\Serialization\Yaml;
@@ -27,48 +23,10 @@ function reseau_mod_up_evenement_install()
 {
   module_set_weight('reseau_mod_up_evenement', 3);
 
-/*
-  $config_files = [
-    
-
-    'views.view.agenda',
-    'block.block.views_block__agenda_block_2',
-    'block.block.views_block__agenda_block_3',
-    'core.entity_form_display.node.evenement.default',
-    'core.entity_view_display.node.evenement.default',
-
-  ];
-
-  foreach ($config_files as $config_id) {
-    $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_evenement') . '/config/hook_install/' . $config_id . '.yml');
-    \Drupal::service('config.factory')->getEditable($config_id)
-      ->setData(Yaml::decode($raw_data))
-      ->save();
-  // dsm(Yaml::decode($raw_data));
-    }
-*/
 // reseau_mod_up_evenement_update_8001();
 }
 
 
-function reseau_mod_up_evenement_uninstall()
-{
-  /*
-    $config_files_torestore = [
-      'block.block.views_block__agenda_block_3',
-      'block.block.views_block__agenda_block_2',
-     
-    ];
-  
-    foreach ($config_files_torestore as $config_id) {
-      $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_evenement') . '/config/hook_restore/' . $config_id . '.yml');
-      \Drupal::service('config.factory')->getEditable($config_id)
-        ->setData(Yaml::decode($raw_data))
-        ->save();
-    // dsm(Yaml::decode($raw_data));
-      }
-  */
-}
 
 function reseau_mod_up_evenement_update_8001() {
   $evenements = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'evenement']);

@@ -47,14 +47,12 @@ function reseau_mod_up_revision_menu_local_tasks_alter(&$data, $route_name, \Dru
       // dsm($tab);
      
       if ($tab['#link']['title'] == "Révisions") {
-        // dsm($tab);
-        // dsm($tab['#link']['title']);
+
         // dsm($data['tabs'][0][$key]['#link']['title']);
         // dsm($data['tabs'][0][$key]);
         $data['tabs'][0][$key]['#access'] = FALSE;
       }
-      
-      // $data['tabs'][0][$key]['#access'] = FALSE;
+
     }
   
   }

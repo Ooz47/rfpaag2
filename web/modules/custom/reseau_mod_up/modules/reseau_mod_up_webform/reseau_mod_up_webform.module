@@ -201,8 +201,6 @@ function reseau_mod_up_webform_theme_suggestions_field_alter(array &$suggestions
       $element = $variables['element'];
       if ($element['#field_name'] == 'field_fmt_candidature') {
       if ($element['#object']->get('field_structure_associee')->target_id == '1') {
-        // dsm($element);
-        // dsm($element['#object']);
         // dsm($element['#object']->get('field_structure_associee')->target_id);
         // dsm($element->get('nid'));
         $suggestions[] = 'field__node__gretagp_field_fmt_candidature';
