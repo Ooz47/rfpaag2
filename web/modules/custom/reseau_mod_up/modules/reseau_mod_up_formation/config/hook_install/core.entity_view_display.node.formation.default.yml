@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 uuid: 06ee3faf-f691-4f39-b8d0-a29711fc0107
+=======
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 langcode: fr
 status: true
 dependencies:
@@ -23,6 +26,10 @@ dependencies:
     - field.field.node.formation.field_fmt_contacts
     - field.field.node.formation.field_fmt_grand_champ
     - field.field.node.formation.field_fmt_information
+<<<<<<< HEAD
+=======
+    - field.field.node.formation.field_fmt_modalites_delais
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     - field.field.node.formation.field_fmt_pole_greta_gp
     - field.field.node.formation.field_fmt_type_accompagnement
     - field.field.node.formation.field_formacode

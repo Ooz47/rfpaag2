@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 uuid: 358029aa-4372-42be-8640-b08eab2fec49
+=======
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 langcode: fr
 status: true
 dependencies:
@@ -8,7 +11,11 @@ dependencies:
     - field.field.paragraph.resultats_formation.field_valeur_resultat
     - paragraphs.paragraphs_type.resultats_formation
   module:
+<<<<<<< HEAD
     - reseau_mod_up
+=======
+    - reseau_up_mod
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 id: paragraph.resultats_formation.default
 targetEntityType: paragraph
 bundle: resultats_formation

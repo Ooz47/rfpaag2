@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 extra.adminreseauup:
   css:
     theme:
       css/adminreseauup.css: {}
+=======
+# extra.admin:
+  # js:
+    # js/admin.js: {}
+  # css:
+    # theme:
+      # css/admin.css: {}
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 
 reseau_mod_up:
   dependencies:

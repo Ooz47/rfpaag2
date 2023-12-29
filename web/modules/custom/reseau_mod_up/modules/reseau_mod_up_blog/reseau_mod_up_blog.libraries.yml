@@ -8,11 +8,14 @@ extra.admin:
     theme:
       css/admin.css: {}
 
+<<<<<<< HEAD
 extra.blogview:
   css:
     theme:
       css/blogview.css: {}
 
+=======
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 reseau_mod_up_blog:
   dependencies:
     - core/drupal

@@ -53,7 +53,15 @@ $term_data_name[$term->getName()] = $term->getName();
         '#type' => 'textfield',
         '#default_value' => $value,
  
+<<<<<<< HEAD
   
+=======
+        // '#size' => 7,
+        // '#maxlength' => 7,
+        // '#element_validate' => [
+        //   [static::class, 'validate'],
+        // ],
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
       ];
     }
     }
@@ -62,8 +70,22 @@ $term_data_name[$term->getName()] = $term->getName();
 
 //  dsm($term_data);
     $element += [
+<<<<<<< HEAD
       '#type' => 'select',
       '#options' => $term_data_name,
+=======
+      // '#type' => 'textfield',
+      // '#default_value' => $value,
+      '#type' => 'select',
+      // '#title' => t('User'),
+      // '#description' => t('Select group members from the list.'),
+      '#options' => $term_data_name,
+      // '#size' => 7,
+      // '#maxlength' => 7,
+      // '#element_validate' => [
+      //   [static::class, 'validate'],
+      // ],
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     ];
   }
   // dsm($element);
@@ -71,11 +93,26 @@ $term_data_name[$term->getName()] = $term->getName();
   }
 
   /**
+<<<<<<< HEAD
    * Validate the text field.
    */
   public static function validate($element, FormStateInterface $form_state) {
     $value = $element['#value'];
 
+=======
+   * Validate the color text field.
+   */
+  public static function validate($element, FormStateInterface $form_state) {
+    $value = $element['#value'];
+    // dsm($element);
+    // if (strlen($value) == 0) {
+    //   $form_state->setValueForElement($element, '');
+    //   return;
+    // }
+    // if (!preg_match('/^#([a-f0-9]{6})$/iD', strtolower($value))) {
+    //   $form_state->setError($element, t("Color must be a 6-digit hexadecimal value, suitable for CSS."));
+    // }
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
   }
 
 }

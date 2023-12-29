@@ -18,6 +18,7 @@ use Drupal\Component\Serialization\Yaml;
 use Drupal\user\Entity\Role;
 
 
+<<<<<<< HEAD
 // function getDataPermission()
 // {
 // //Liste de type de contenus autorisés
@@ -50,6 +51,40 @@ use Drupal\user\Entity\Role;
 
 // return [$permissionstoGrant, $rolestoGrant ];
 // }
+=======
+function getDataPermission()
+{
+//Liste de type de contenus autorisés
+$contentType = 'page_de_blog';
+
+// On crée la liste des permissions
+$permissionstoGrant = [];
+
+
+  $permissionstoGrant[] = "create $contentType content";
+  $permissionstoGrant[] = "delete any $contentType content";
+  $permissionstoGrant[] = "delete own $contentType content";
+  $permissionstoGrant[] = "delete $contentType revisions";
+  $permissionstoGrant[] = "edit any $contentType content";
+  $permissionstoGrant[] = "edit own $contentType content";
+  $permissionstoGrant[] = "revert $contentType revisions";
+  $permissionstoGrant[] = "view $contentType revisions";
+
+
+
+//Liste des roles
+$rolestoGrant = [
+  'webmaster_cfapag',
+  'webmaster_greta_guadeloupe',
+  'webmaster_gipdaifi',
+  'webmaster_greta_sxmsbh',
+  'webmaster_cfasbh',
+  'webmaster_reseau'
+];
+
+return [$permissionstoGrant, $rolestoGrant ];
+}
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
 
 /**
  * Implements hook_install().
@@ -61,5 +96,60 @@ function reseau_mod_up_blog_install()
 {
   module_set_weight('reseau_mod_up_blog', 3);
 
+<<<<<<< HEAD
 }
 
+=======
+
+  $config_files = [
+    'block.block.navigationprincipale',
+    'block.block.reseau_page_title',
+    'core.base_field_override.node.page_de_blog.promote',
+    'core.base_field_override.node.page_de_blog.status',
+    'simple_sitemap.bundle_settings.default.node.page_de_blog',
+
+  ];
+
+  foreach ($config_files as $config_id) {
+    $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_blog') . '/config/hook_install/' . $config_id . '.yml');
+    \Drupal::service('config.factory')->getEditable($config_id)
+      ->setData(Yaml::decode($raw_data))
+      ->save();
+  // dsm(Yaml::decode($raw_data));
+    }
+
+    [$permissionstoGrant,$rolestoGrant] =  getDataPermission();
+  
+  foreach ($rolestoGrant as $roletoGrant) {
+
+    $role_object = Role::load($roletoGrant);
+    $role_object->grantPermission('gerer les revisions');
+
+    foreach ($permissionstoGrant as $permission) {
+      $role_object->grantPermission($permission);
+    }
+
+    $role_object->save();
+  }
+
+}
+
+
+function reseau_mod_up_blog_uninstall()
+{
+    // $config_files_torestore = [
+    //   'block.block.views_block__agenda_block_3',
+    //   'block.block.views_block__agenda_block_2',
+     
+    // ];
+  
+    // foreach ($config_files_torestore as $config_id) {
+    //   $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_blog') . '/config/hook_restore/' . $config_id . '.yml');
+    //   \Drupal::service('config.factory')->getEditable($config_id)
+    //     ->setData(Yaml::decode($raw_data))
+    //     ->save();
+    // // dsm(Yaml::decode($raw_data));
+    //   }
+  
+}
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6

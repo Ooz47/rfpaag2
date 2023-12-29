@@ -14,10 +14,17 @@ function reseau_mod_up_revision_form_alter(&$form, \Drupal\Core\Form\FormStateIn
 
    /*Gestion accès form Add et edit */
    $nodetype = array(
+<<<<<<< HEAD
     "node_actualite_edit_form",
    "node_evenement_edit_form",
     "node_formation_edit_form",
     "node_page_edit_form",
+=======
+    "node_actualite_form", "node_actualite_edit_form",
+    "node_evenement_form", "node_evenement_edit_form",
+    "node_formation_form", "node_formation_edit_form",
+    "node_page_form", "node_page_edit_form",
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     "node_structure_edit_form",
   );
 
@@ -47,12 +54,22 @@ function reseau_mod_up_revision_menu_local_tasks_alter(&$data, $route_name, \Dru
       // dsm($tab);
      
       if ($tab['#link']['title'] == "Révisions") {
+<<<<<<< HEAD
 
+=======
+        // dsm($tab);
+        // dsm($tab['#link']['title']);
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
         // dsm($data['tabs'][0][$key]['#link']['title']);
         // dsm($data['tabs'][0][$key]);
         $data['tabs'][0][$key]['#access'] = FALSE;
       }
+<<<<<<< HEAD
 
+=======
+      
+      // $data['tabs'][0][$key]['#access'] = FALSE;
+>>>>>>> e5782c0467488c4ed9583877bea24221f86fafc6
     }
   
   }
