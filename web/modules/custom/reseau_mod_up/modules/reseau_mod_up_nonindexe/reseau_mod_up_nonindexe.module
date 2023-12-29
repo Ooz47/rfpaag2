@@ -71,3 +71,28 @@ function reseau_mod_up_nonindexe_page_attachments_alter(array &$attachments)
     $attachments['#attached']['library'][] = 'reseau_mod_up_nonindexe/extra.indexation';
   }
 }
+
+
+/**
+ * Implements hook_preprocess_menu().
+ *
+ * @param array[] $variables
+ */
+function reseau_mod_up_nonindexe_preprocess_menu(&$variables) {
+  $current_user = \Drupal::entityTypeManager()->getStorage('user')->load(\Drupal::currentUser()->id());
+      if (($current_user->hasRole('administrator')) || ($current_user->id() == '1')) {
+        return;
+      } else {
+    // if (isset($variables['menu_name']) && $variables['menu_name'] === 'admin') {
+    //   foreach($variables['items'] as $key => $item) {
+  
+    // if($variables['items'][$key]['title'] == 'Configuration'){
+    //   dsm( $variables['items']);
+    // }
+
+    // }
+    // }
+    unset($variables['items']['system.admin_config']);
+  }
+  // }
+}

@@ -116,11 +116,13 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
     }
 
     $user = \Drupal::currentUser();
+    if($form_id === 'node_page_de_blog_edit_form') {
     if ($user->hasPermission('gerer les revisions')) {
 
       $form['revision']['#access'] = TRUE;
       $form['revision_log']['#access'] = TRUE;
     }
+  }
     if (\Drupal::currentUser()->hasPermission('modifier structure associee')) {
       return;
     }

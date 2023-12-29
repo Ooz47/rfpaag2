@@ -14,10 +14,10 @@ function reseau_mod_up_revision_form_alter(&$form, \Drupal\Core\Form\FormStateIn
 
    /*Gestion accès form Add et edit */
    $nodetype = array(
-    "node_actualite_form", "node_actualite_edit_form",
-    "node_evenement_form", "node_evenement_edit_form",
-    "node_formation_form", "node_formation_edit_form",
-    "node_page_form", "node_page_edit_form",
+    "node_actualite_edit_form",
+   "node_evenement_edit_form",
+    "node_formation_edit_form",
+    "node_page_edit_form",
     "node_structure_edit_form",
   );
 

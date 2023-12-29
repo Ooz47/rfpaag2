@@ -28,7 +28,7 @@
     color: #009e99;
 }
 
-#block-reseau-page-title h1 i.fa-unlock:before {
+#block-reseau-page-title h1 i.fa-unlock::before {
     /* content: "\f09c"; */
     content: "\f3c1";
 }
