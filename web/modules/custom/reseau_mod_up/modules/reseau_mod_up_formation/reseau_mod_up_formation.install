@@ -49,7 +49,7 @@ function reseau_mod_up_formation_install() {
   // dsm(Yaml::decode($raw_data));
     }
  */
-    reseau_mod_up_formation_update_8001();
+    // reseau_mod_up_formation_update_8001();
 }
 
 function reseau_mod_up_formation_uninstall() {

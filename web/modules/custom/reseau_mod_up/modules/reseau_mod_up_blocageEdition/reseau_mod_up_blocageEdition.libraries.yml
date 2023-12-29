@@ -8,6 +8,6 @@ extra.webmasterstructures:
     theme:
       css/webmasterstructures.css: {}
 
-reseau_mod_up_blocageEdition:
+reseau_mod_up_blocageedition:
   dependencies:
     - core/drupal

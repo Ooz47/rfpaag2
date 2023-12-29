@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains install and update functions for reseau_mod_up_blocageEdition module.
+ * Contains install and update functions for reseau_mod_up_blocageedition module.
  */
 
 use Drupal\Component\Serialization\Yaml;
@@ -28,9 +28,9 @@ function getRoles()
  * Implements hook_install().
  */
 
-function reseau_mod_up_blocageEdition_install()
+function reseau_mod_up_blocageedition_install()
 {
-  module_set_weight('reseau_mod_up_blocageEdition', 3);
+  module_set_weight('reseau_mod_up_blocageedition', 3);
 
   /*
   $config_files = [
@@ -39,7 +39,7 @@ function reseau_mod_up_blocageEdition_install()
   ];
 
   foreach ($config_files as $config_id) {
-    $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_blocageEdition') . '/config/hook_install/' . $config_id . '.yml');
+    $raw_data = file_get_contents(drupal_get_path('module', 'reseau_mod_up_blocageedition') . '/config/hook_install/' . $config_id . '.yml');
     \Drupal::service('config.factory')->getEditable($config_id)
       ->setData(Yaml::decode($raw_data))
       ->save();
