@@ -91,8 +91,12 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
     $form['status']['#access'] = TRUE;
     $form['created']['#access'] = TRUE;
 
-    if (isset($form['index_now'])) {
-      $form['index_now']['#access'] = FALSE;
+    // if (isset($form['index_now'])) {
+    //   $form['index_now']['#access'] = FALSE;
+    // }
+
+    if (isset($form['simple_sitemap_index_now'])) {
+      $form['simple_sitemap_index_now']['#access'] = FALSE;
     }
 
     $form['field_act_acc_structure']['#states'] = [
@@ -146,8 +150,11 @@ function reseau_mod_up_blog_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
   if (in_array($form_id, $nodetype)) {
     get_autorisation_access();
 
-    if (isset($form['index_now'])) {
-      $form['index_now']['#access'] = FALSE;
+    // if (isset($form['index_now'])) {
+    //   $form['index_now']['#access'] = FALSE;
+    // }
+    if (isset($form['simple_sitemap_index_now'])) {
+      $form['simple_sitemap_index_now']['#access'] = FALSE;
     }
   }
 }

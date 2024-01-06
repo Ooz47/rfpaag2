@@ -23,21 +23,18 @@ use Drupal\slick\Plugin\Field\FieldFormatter\SlickMediaFormatter;
 class SlickParagraphsFormatter extends SlickMediaFormatter {
 
   /**
-   * Overrides the scope for the form elements.
+   * {@inheritdoc}
    */
-  public function getScopedFormElements() {
-    $admin       = $this->admin();
+  protected function getPluginScopes(): array {
     $target_type = $this->getFieldSetting('target_type');
-    $views_ui    = $this->getFieldSetting('handler') == 'default';
-    $bundles     = $views_ui ? [] : $this->getFieldSetting('handler_settings')['target_bundles'];
-    $media       = $admin->getFieldOptions($bundles, ['entity_reference'], $target_type, 'media');
+    $media       = $this->getFieldOptions(['entity_reference'], $target_type, 'media', FALSE);
     $stages      = ['image', 'entity_reference'];
-    $stages      = $admin->getFieldOptions($bundles, $stages, $target_type);
+    $stages      = $this->getFieldOptions($stages, $target_type);
 
     return [
       'images'   => $stages,
       'overlays' => $stages + $media,
-    ] + parent::getScopedFormElements();
+    ] + parent::getPluginScopes();
   }
 
   /**

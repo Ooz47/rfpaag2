@@ -2,183 +2,172 @@
 
 namespace Drupal\blazy;
 
-use Drupal\blazy\Media\BlazyFile;
-use Drupal\blazy\Media\BlazyResponsiveImage;
+use Drupal\blazy\Media\Preloader;
+use Drupal\blazy\Utility\Check;
 
 /**
- * Provides common field formatter-related methods: Blazy, Slick.
+ * Provides common image, file, media formatter-related methods.
  */
 class BlazyFormatter extends BlazyManager implements BlazyFormatterInterface {
 
   /**
-   * Checks if image dimensions are set.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  private $isImageDimensionSet;
-
-  /**
-   * Returns available styles with crop in the effect name.
-   *
-   * @var array
-   */
-  protected $cropStyles;
-
-  /**
-   * Checks if the image style contains crop in the effect name.
-   *
-   * @var array
-   */
-  protected $isCrop;
+  protected static $namespace = 'blazy';
 
   /**
    * {@inheritdoc}
    */
+  protected static $itemId = 'content';
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $itemPrefix = 'blazy';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldSettings(array &$settings, $items): void {
+    Check::fields($settings, $items);
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @todo make it protected after sub-modules, mostly are just tests + BVEF.
+   */
   public function buildSettings(array &$build, $items) {
-    $settings = &$build['settings'];
-    $entity   = $items->getEntity();
+    $this->hashtag($build);
+    $settings = &$build['#settings'];
 
-    $this->prepareData($build, $entity);
-    $this->getCommonSettings($settings);
-    $this->getEntitySettings($settings, $entity);
+    // BC for mismatched minor versions.
+    $blazies = $this->verifySafely($settings);
+    $entity  = $items->getEntity();
 
-    $blazies        = &$settings['blazies'];
-    $count          = $items->count();
-    $field          = $items->getFieldDefinition();
-    $field_name     = $field->getName();
-    $field_clean    = str_replace("field_", '', $field_name);
-    $entity_type_id = $settings['entity_type_id'];
-    $entity_id      = $settings['entity_id'];
-    $bundle         = $settings['bundle'];
-    $view_mode      = $settings['current_view_mode'];
-    $namespace      = $settings['namespace'];
-    $id             = $settings['id'] ?? '';
-    $gallery_id     = "{$namespace}-{$entity_type_id}-{$bundle}-{$field_clean}-{$view_mode}";
-    $id             = Blazy::getHtmlId("{$gallery_id}-{$entity_id}", $id);
+    // @todo remove after sub-modules.
+    if (!empty($settings['item_id'])) {
+      foreach (['item_id', 'namespace'] as $key) {
+        if (!empty($settings[$key])) {
+          $k = str_replace('_', '.', $key);
+          $blazies->set($k, $settings[$key]);
+        }
+      }
+    }
 
-    // Provides formatter settings.
-    $settings['cache_metadata']['keys'][] = $id;
-    $settings['cache_metadata']['keys'][] = $count;
+    // BVEF compat due to its ::viewElements being left behind.
+    // @todo remove once BVEF is updated to Blazy:2.10.
+    if (!$blazies->was('initialized')) {
+      $this->preSettings($settings);
+      Preloader::prepare($settings, $items);
+      $this->postSettings($settings);
+    }
 
-    // When alignment is mismatched, split them to satisfy linter.
-    $settings['cache_tags'][] = $entity_type_id . ':' . $entity_id;
-    $settings['caption']      = empty($settings['caption']) ? [] : array_filter($settings['caption']);
-    $settings['count']        = $count;
-    $settings['gallery_id']   = str_replace('_', '-', $gallery_id . '-' . $settings['media_switch']);
-    $settings['id']           = $id;
+    $build['#entity'] = $entity;
+    $this->prepareData($build);
+    $this->fieldSettings($settings, $items);
 
-    // Respects linked_field.module expectation.
-    $use_field = !$blazies->get('lightbox') && ($settings['third_party']['linked_field']['linked'] ?? FALSE);
+    // Minor byte saving.
+    if (!empty($settings['caption'])) {
+      $settings['caption'] = array_filter($settings['caption']);
+    }
+  }
 
-    $blazies->set('use.field', $use_field);
+  /**
+   * {@inheritdoc}
+   */
+  public function minimalSettings(array &$settings, $items): void {
+    Check::grids($settings);
   }
 
   /**
    * {@inheritdoc}
    */
   public function preBuildElements(array &$build, $items, array $entities = []) {
+    $this->hashtag($build);
+    $settings = &$build['#settings'];
+
+    // BC for mismatched minor versions.
+    $blazies   = $this->verifySafely($settings);
+    $plugin_id = $blazies->get('field.plugin_id');
+
+    // BC for non-nego vanilla formatters identified by its vanilla plugin ID.
+    if ($plugin_id && strpos($plugin_id, 'vanilla') !== FALSE) {
+      $settings['vanilla'] = TRUE;
+      $blazies->set('is.vanilla', TRUE);
+    }
+
+    // Extracts initial settings:
+    // - Container or root level settings: lightboxes, grids, etc.
+    // - Map (Responsive) image style option to its entity, etc.
+    // - Lazy load decoupled via `No JavaScript: lazy`, etc.
+    $this->preSettings($settings);
+
+    // Extracts the first image item to build colorbox/zoom-like gallery.
+    // Also prepare URIs for the new Preload option.
+    // Requires image style entities from ::preSettings() above.
+    Preloader::prepare($settings, $items, $entities);
+
+    // Extracts (Responsive) image dimensions, requires first.uri above.
+    $this->postSettings($settings);
+
+    // @todo remove after sub-modules hook_alters at 3.x.
+    $build['settings'] = &$settings;
+
+    // Allows altering the presettings once for the entire ecosystem.
+    // Has the needed settings above to modify sub-modules ::buildSettings().
+    $this->moduleHandler->alter('blazy_presettings', $settings, $items, $entities);
+
+    // Extended by sub-modules with data massaged above.
     $this->buildSettings($build, $items);
-    $settings = &$build['settings'];
+  }
 
-    // Pass first item to optimize sizes this time.
-    if (!empty($items[0])) {
-      $this->uris($settings, $items, $entities);
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function preElements(array &$build, $items, array $entities = []): void {
+    $this->preBuildElements($build, $items, $entities);
 
-    // Sets dimensions once, if cropped, to reduce costs with ton of images.
-    // This is less expensive than re-defining dimensions per image.
-    if (!empty($settings['_uri'])) {
-      if ($settings['blazies']->get('resimage.style')) {
-        BlazyResponsiveImage::dimensionsAndSources($settings, TRUE);
-      }
-      else {
-        $this->setImageDimensions($settings);
-      }
-    }
+    $settings = &$build['#settings'];
 
-    // Allows altering the settings.
-    $this->getModuleHandler()->alter('blazy_settings', $build, $items);
+    // Since 2.17, allows altering the settings once for the entire ecosystem,
+    // rather than each hook_alter for every modules.
+    // The $build contains #settings, or potential #optionset for sub-modules.
+    $this->moduleHandler->alter('blazy_settings', $build, $items, $entities);
+
+    // Combines settings with the provided hook_alter().
+    $this->postSettingsAlter($settings, $items->getEntity());
   }
 
   /**
    * {@inheritdoc}
    */
   public function postBuildElements(array &$build, $items, array $entities = []) {
-    // Do nothing.
-  }
+    $settings = &$build['#settings'];
+    $blazies  = $settings['blazies'];
 
-  /**
-   * {@inheritdoc}
-   */
-  public function isCrop($style) {
-    if (!isset($this->isCrop[$style])) {
-      $this->isCrop[$style] = $this->cropStyles()[$style] ?? FALSE;
-    }
-    return $this->isCrop[$style];
-  }
+    // The last method before being passed to each manager builders.
+    // Supports lightbox gallery if using Blazy formatter.
+    // Some formatter has a toggle Vanilla, only makes sense for non-vanilla.
+    if (empty($settings['vanilla']) && isset($settings['image_style'])) {
+      // Extract the first found formatter settings AFTER being processed by
+      // blazy/ sub-module #pre_render so to inform the top level container
+      // about at least the first found URI which is not available at
+      // ::preElements() so to help ElevateZoomPlus, and others needing this
+      // to dipslay their first preview. The most comprehensible sample is
+      // Colorbox large display with small ones, similar to ElevateZoomPlus.
+      if ($item = ($build['items'][0] ?? [])) {
+        $fallback = $item[static::$itemId]['#build'] ?? [];
+        $data = $item['#build'] ?? $fallback;
 
-  /**
-   * Sets dimensions once to reduce method calls, if image style contains crop.
-   *
-   * @param array $settings
-   *   The settings being modified.
-   */
-  protected function setImageDimensions(array &$settings = []) {
-    if (!isset($this->isImageDimensionSet[md5($settings['id'])])) {
-      // If image style contains crop, sets dimension once, and let all inherit.
-      if (!empty($settings['image_style']) && ($style = $this->isCrop($settings['image_style']))) {
-        $settings = array_merge($settings, BlazyFile::transformDimensions($style, $settings, TRUE));
-
-        // Informs individual images that dimensions are already set once.
-        $settings['_dimensions'] = TRUE;
-      }
-
-      $this->isImageDimensionSet[md5($settings['id'])] = TRUE;
-    }
-  }
-
-  /**
-   * Extract the first image item to build colorbox/zoom-like gallery.
-   *
-   * @todo move it into BlazyManagerBase if usable outside formatters.
-   */
-  protected function uris(array &$settings, $items, array $entities = []) {
-    if ($output = BlazyFile::urisFromField($settings, $items, $entities)) {
-      $settings['_uri'] = reset($output);
-    }
-
-    // The first image dimensions to differ from individual item dimensions.
-    // @todo merge it into BlazyFile::urisFromField to swap them all once.
-    if (!empty($settings['_item'])) {
-      BlazyFile::imageDimensions($settings, $settings['_item'], TRUE);
-    }
-  }
-
-  /**
-   * Returns available image styles with crop in the name.
-   */
-  private function cropStyles() {
-    if (!isset($this->cropStyles)) {
-      $this->cropStyles = [];
-      foreach ($this->entityLoadMultiple('image_style') as $style) {
-        foreach ($style->getEffects() as $effect) {
-          if (strpos($effect->getPluginId(), 'crop') !== FALSE) {
-            $this->cropStyles[$style->getName()] = $style;
-            break;
+        if ($data = array_filter($data)) {
+          if ($blazy = $data['#settings']['blazies'] ?? NULL) {
+            $blazies->set('first.data', $data)
+              ->set('first.uri', $blazy->get('image.uri'));
           }
         }
       }
     }
-    return $this->cropStyles;
   }
-
-  /**
-   * Deprecated method.
-   *
-   * @deprecated in blazy:8.x-2.6 and is removed from blazy:3.0.0. Use
-   *   self::urisFromField() instead to also extract URIs for preload option.
-   * @see https://www.drupal.org/node/3103018
-   */
-  public function extractFirstItem(array &$settings, $item, $entity = NULL) {}
 
 }

@@ -2,66 +2,158 @@
 
 namespace Drupal\blazy\Media;
 
+use Drupal\blazy\BlazyManagerInterface;
+use Drupal\media\MediaInterface;
+use GuzzleHttp\Client;
+
 /**
  * Provides extra utilities to work with core Media.
- *
- * This class makes it possible to have a mixed display of all media entities,
- * useful for Blazy Grid, Slick Carousel, GridStack contents as mixed media.
- * This approach is alternative to regular preprocess overrides, still saner
- * than iterating over unknown like template_preprocess_media_entity_BLAH, etc.
- *
- * @internal
- *   This is an internal part of the Blazy system and should only be used by
- *   blazy-related code in Blazy module. Media integration is being reworked.
- *
- * @todo rework this for core Media, and refine for theme_blazy(). One big TODO
- * for the next releases is to replace ImageItem references into just $settings.
  */
 interface BlazyMediaInterface {
 
   /**
-   * Builds the media field which is not understood by theme_blazy().
+   * Returns the http client service.
    *
-   * @param object $media
-   *   The media being rendered.
-   * @param array $settings
-   *   The contextual settings array.
+   * @return \GuzzleHttp\Client
+   *   The http client.
+   */
+  public function httpClient(): Client;
+
+  /**
+   * Returns the blazy manager service.
+   *
+   * @return \Drupal\blazy\BlazyManagerInterface
+   *   The blazy manager.
+   */
+  public function manager(): BlazyManagerInterface;
+
+  /**
+   * Builds the media render which is mostly understood by theme_blazy().
+   *
+   * @param array $data
+   *   The array containing:
+   *     - #entity the Media or File entity.
+   *     - #settings array.
    *
    * @return array
    *   The renderable array of the media field, or empty if not applicable.
-   *
-   * @todo make it non-static method.
    */
-  public static function build($media, array $settings = []): array;
+  public function build(array $data): array;
 
   /**
-   * Returns a field item/ content to be wrapped by theme_blazy().
+   * Returns the media render which is partly not understood by theme_blazy().
    *
-   * @param array $field
-   *   The source renderable array $field.
+   * When this output arrives at theme_blazy() as content property, Blazy can no
+   * longer work with it. That's why we need to do a relatively similar routine
+   * to BlazyManager::preRenderBlazy(), only to a bare mimimum.
+   *
+   * @param array $build
+   *   The array containing:
+   *     - #entity the Media or File entity.
+   *     - #settings array.
    *
    * @return array
-   *   The renderable array of the media item to be wrapped by theme_blazy().
-   *
-   * @todo make it non-static method.
+   *   The renderable array of the media field, or empty if not applicable.
    */
-  public static function wrap(array $field = []): array;
+  public function view(array $build): array;
 
   /**
-   * Extracts image from non-media entities for the main background/ stage.
+   * Returns a media entity from a file entity.
    *
-   * Main image can be separate image item from video thumbnail for highres.
-   * Fallback to default thumbnail if any, which has no file API. This used to
-   * be for non-media File Entity Reference at 1.x, things changed since then.
-   * This is currently reused for Paragraphs which embeds Media.
+   * This was normally called by Views field file lacking of Media data, unlike
+   * field formatters which are abundant of. Guess works here.
    *
-   * @param array $element
-   *   The element array might contain item and settings.
-   * @param object $entity
-   *   The file entity or entityreference which might have image item.
+   * @param array $data
+   *   The array containing:
+   *     - #entity, the File entity.
+   *     - #settings array.
    *
-   * @see \Drupal\blazy\Dejavu\BlazyEntityMediaBase::buildElement
+   * @return object
+   *   The media, or NULL if not applicable.
    */
-  public static function imageItem(array &$element, $entity): void;
+  public function fromFile(array $data): ?object;
+
+  /**
+   * Returns a media entity from a field name.
+   *
+   * @param object $entity
+   *   The entity.
+   * @param string $field_name
+   *   The field_name to query by.
+   * @param array|string $values
+   *   The optional values of field_name.
+   */
+  public function fromField($entity, $field_name, $values = NULL): ?object;
+
+  /**
+   * Extracts needed info from a media.
+   *
+   * @param \Drupal\media\MediaInterface $media
+   *   The media entity.
+   * @param string $view_mode
+   *   The view_mode.
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return array
+   *   The media info containing metadata and translated entity.
+   */
+  public function getMetadata(MediaInterface $media, $view_mode, $langcode): array;
+
+  /**
+   * Returns a guessed source from a file, normally called by Views field file.
+   *
+   * As long as you are not being too creative by renaming, or changing
+   * fields provided by core, this should be your good friend.
+   * This guess work is only needed by Views fields lacking of Media data, as
+   * seen at IO/Slick Entity Browser specific with file entities.
+   *
+   * @param object $file
+   *   The file entity.
+   *
+   * @return string
+   *   The media source, limited to some known.
+   */
+  public function getSource($file): ?string;
+
+  /**
+   * Modifies item attributes for iframes if any.
+   *
+   * This requires at least an image.uri to be a lazyloaded iframe.
+   *
+   * @param array $item
+   *   The renderable array, normally entity.get.view or Views row.rendered.
+   * @param array $settings
+   *   The settings being modified.
+   *
+   * @return bool
+   *   Returns TRUE if iframeable with some modified settings.
+   */
+  public function iframeable(array &$item, array &$settings): bool;
+
+  /**
+   * Prepares media item data to provide image item.
+   *
+   * @param array $data
+   *   The array containing:
+   *     - #entity the Media entity.
+   *     - #settings array, etc.
+   */
+  public function prepare(array &$data): MediaInterface;
+
+  /**
+   * Converts input URL into embed URL.
+   *
+   * @param string $input
+   *   The input to modify.
+   * @param string $iframe_domain
+   *   The iframe_domain from media.settings.
+   * @param array $parameters
+   *   The optional parameters, normally just autoplay.
+   *
+   * @return string
+   *   The media oembed url.
+   */
+  public function toEmbedUrl($input, $iframe_domain, array $parameters = []): string;
 
 }

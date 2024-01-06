@@ -7,6 +7,7 @@ include_title_segment: true
 language_path_prefix_as_segment: false
 use_menu_title_as_fallback: false
 use_page_title_as_menu_title_fallback: false
+menu_title_preferred_menu: ''
 remove_repeated_segments: true
 term_hierarchy: false
 absolute_paths: false
@@ -34,7 +35,7 @@ custom_paths: ''
 title_segment_as_link: false
 follow_redirects: true
 limit_segment_display: FALSE
-segment_display_limit: ''
+segment_display_limit: 0
 truncator_mode: false
 truncator_length: 100
 truncator_dots: true

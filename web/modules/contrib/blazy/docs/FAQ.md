@@ -21,6 +21,16 @@ some code cleanup, and optimization where needed. Patches are very much welcome.
 * The `b-lazy` class is applied to the **target item** to lazy load, normally
   the children of `.blazy`, but not always. This can be IMG, VIDEO, DIV, etc.
 
+### BLAZY:DONE VS. BIO:DONE EVENTS
+The `blazy:done` event is for individual lazy-loaded elements, while `bio:done`
+is for the entire collections.
+
+Since 2.17, you can namespace colonized events like so: `blazy:done.MYMODULE`
+which was problematic with dot `blazy.done`. That is why `blazy.done` is
+deprecated for `blazy:done`. The dotted event names like `blazy.done` will
+continue working till 3.x. Changing them to colonized `blazy:done` is strongly
+recommended to pass 3.x. Newly added events will only use colons.
+
 ### WHAT `BLAZY` CSS CLASS IS FOR?
 Aside from the fact that a module must reserve its namespace including for CSS
 classes, the `blazy` is actually used to limit the scope to scan document.
@@ -66,7 +76,14 @@ Assumed, untested, fine with combo IO + `decoding` checks before blur spits.
 
 Shortly we are in the right direction to cope with Native vs. `data-[SRC]`.
 See `bio.js ::natively` for more contextual info.  
-[?] Todo recheck IF wrong so to put back https://drupal.org/node/3120696.
+[x] Todo recheck IF wrong so to put back https://drupal.org/node/3120696.
+
+**UPDATE 2022-03-03**: The above is almost not wrong as proven by no `b-loaded`
+class and no `blur` is triggered earlier, but 8000px threshold rules. Meaning
+the image is immediately requested 8000px before entering viewport.
+Added back a delay to only lazy load once the first found is loaded at field
+formatter level via `Loading priority: defer`, see
+[#3120696](https://drupal.org/node/3120696)
 
 ### ANIMATE.CSS INTEGRATION
 Blazy container (`.media`) can be animated using
@@ -93,19 +110,23 @@ To replace **Blur** effect with `animate.css` thingies, implements two things:
 function MYTHEME_preprocess_blazy(&$variables) {
   $settings = &$variables['settings'];
   $attributes = &$variables['attributes'];
+  $blazies = $settings['blazies'];
 
   // Be sure to limit the scope, only animate for particular conditions.
-  if ($settings['entity_id'] == 123
-    && $settings['field_name'] == 'field_media_animated')  {
+  if ($blazies->get('entity.id') == 123
+    && $blazies->get('field.name') == 'field_media_animated')  {
+    $fx = $blazies->get('fx');
 
-    // This was taken care of by feeding $settings['fx'], or hard-coded here.
-    $attributes['data-animation'] = 'wobble';
+    // This was taken care of by feeding $fx, or hard-coded here.
+    // Since 2.17, `data-animation` is deprecated for `data-b-animation`.
+    $prefix = $blazies->use('data_b') ? 'data-b-' : 'data-';
+    $attributes[$prefix . 'animation'] = $fx ?: 'wobble';
 
     // The following can be defined manually.
-    $attributes['data-animation-duration'] = '3s';
-    $attributes['data-animation-delay'] = '.3s';
+    $attributes[$prefix . 'animation-duration'] = '3s';
+    $attributes[$prefix . 'animation-delay'] = '.3s';
     // Iteration can be any number, or infinite.
-    $attributes['data-animation-iteration-count'] = 'infinite';
+    $attributes[$prefix . 'animation-iteration-count'] = 'infinite';
   }
 }
 ```

@@ -5,6 +5,7 @@ namespace Drupal\easy_breadcrumb\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\easy_breadcrumb\EasyBreadcrumbConstants;
+use Drupal\system\Entity\Menu;
 
 /**
  * Build Easy Breadcrumb settings form.
@@ -77,6 +78,18 @@ class EasyBreadcrumbGeneralSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get(EasyBreadcrumbConstants::REMOVE_REPEATED_SEGMENTS),
     ];
 
+    $details_general[EasyBreadcrumbConstants::REMOVE_REPEATED_SEGMENTS_TEXT_ONLY] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Remove repeated identical segments - only validate on the text'),
+      '#description' => $this->t('When removing identical segments only text is matched upon.'),
+      '#default_value' => $config->get(EasyBreadcrumbConstants::REMOVE_REPEATED_SEGMENTS_TEXT_ONLY),
+      '#states' => [
+        'invisible' => [
+          ':input[name="' . EasyBreadcrumbConstants::REMOVE_REPEATED_SEGMENTS . '"]' => ['checked' => FALSE],
+        ],
+      ],
+    ];
+
     $details_general[EasyBreadcrumbConstants::INCLUDE_HOME_SEGMENT] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Include the front page as a segment in the breadcrumb'),
@@ -110,6 +123,26 @@ class EasyBreadcrumbGeneralSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Use menu title when available'),
       '#description' => $this->t('Use menu title instead of raw path component. The real page title setting above will take presidence over this setting. So, one or the other, but not both.'),
       '#default_value' => $config->get(EasyBreadcrumbConstants::USE_MENU_TITLE_AS_FALLBACK),
+    ];
+
+    $menu_list = array_map(function ($menu) { return $menu->label(); }, Menu::loadMultiple());
+    asort($menu_list);
+    $details_general[EasyBreadcrumbConstants::MENU_TITLE_PREFERRED_MENU] = [
+      '#type' => 'select',
+      '#title' => $this->t('Preferred menu'),
+      '#options' => $menu_list,
+      '#empty_option' => t('- None -'),
+      '#empty_value' => '',
+      '#description' => $this->t('Preferred menu to use as menu title source. Useful if menu links with identical paths exist in multiple menus.'),
+      '#default_value' => $config->get(EasyBreadcrumbConstants::MENU_TITLE_PREFERRED_MENU),
+      '#states' => [
+        'disabled' => [
+          ':input[name="' . EasyBreadcrumbConstants::USE_MENU_TITLE_AS_FALLBACK . '"]' => ['checked' => FALSE],
+        ],
+        'invisible' => [
+          ':input[name="' . EasyBreadcrumbConstants::USE_MENU_TITLE_AS_FALLBACK . '"]' => ['checked' => FALSE],
+        ],
+      ],
     ];
 
     $details_general[EasyBreadcrumbConstants::USE_PAGE_TITLE_AS_MENU_TITLE_FALLBACK] = [
@@ -211,6 +244,13 @@ class EasyBreadcrumbGeneralSettingsForm extends ConfigFormBase {
       ],
     ];
 
+    $details_advanced[EasyBreadcrumbConstants::HOME_SEGMENT_VALIDATION_SKIP] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Do not check for path, that is duplicate of home page.'),
+      '#description' => $this->t('If checked, validation for similarity between the breadcrumb element and the home page, will be skipped.'),
+      '#default_value' => $config->get(EasyBreadcrumbConstants::HOME_SEGMENT_VALIDATION_SKIP),
+    ];
+
     $details_advanced[EasyBreadcrumbConstants::TITLE_SEGMENT_AS_LINK] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Make the current page title segment a link'),
@@ -262,7 +302,7 @@ class EasyBreadcrumbGeneralSettingsForm extends ConfigFormBase {
 
     // Formats the ignored-words array as space separated list of words
     // (word1 word2 wordN) before displaying them.
-    $capitalizator_ignored_words_arr = $config->get(EasyBreadcrumbConstants::CAPITALIZATOR_IGNORED_WORDS);
+    $capitalizator_ignored_words_arr = $config->get(EasyBreadcrumbConstants::CAPITALIZATOR_IGNORED_WORDS) ?? [];
     $capitalizator_ignored_words = @implode(' ', $capitalizator_ignored_words_arr);
 
     $details_advanced[EasyBreadcrumbConstants::CAPITALIZATOR_IGNORED_WORDS] = [
@@ -283,7 +323,7 @@ class EasyBreadcrumbGeneralSettingsForm extends ConfigFormBase {
 
     // Formats the forced-words array as space separated list of words
     // (word1 word2 wordN) before displaying them.
-    $capitalizator_forced_words_arr = $config->get(EasyBreadcrumbConstants::CAPITALIZATOR_FORCED_WORDS);
+    $capitalizator_forced_words_arr = $config->get(EasyBreadcrumbConstants::CAPITALIZATOR_FORCED_WORDS) ?? [];
     $capitalizator_forced_words = @implode(' ', $capitalizator_forced_words_arr);
 
     $details_advanced[EasyBreadcrumbConstants::CAPITALIZATOR_FORCED_WORDS] = [
@@ -339,7 +379,7 @@ class EasyBreadcrumbGeneralSettingsForm extends ConfigFormBase {
     ];
 
     $details_advanced[EasyBreadcrumbConstants::TRUNCATOR_LENGTH] = [
-      '#type' => 'textfield',
+      '#type' => 'number',
       '#title' => $this->t("Set the limit of truncation"),
       '#default_value' => $config->get(EasyBreadcrumbConstants::TRUNCATOR_LENGTH),
       '#states' => [

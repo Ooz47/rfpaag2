@@ -391,7 +391,9 @@ main,
 
 
 }
-
+.temoignagesconteneur blockquote {
+  margin: 0;
+ }
 .btn:hover {
   color: $blanc;
 }
@@ -1106,7 +1108,8 @@ footer {
   color: $blanc;
 }
 
-.align-center img {
+.align-center img,
+.align-center .blazy .media--blazy img.media__element {
   display: block;
   margin-right: auto;
   margin-left: auto;
@@ -2502,7 +2505,7 @@ h2, .h2 {
       }
     }
 
-    .blazy--field-image-principale--default {
+    .blazy--field-image-principale--full {
       float: right;
       padding-left: 30px;
       width: 46%;
@@ -2532,6 +2535,7 @@ aside #block-views-block-sliders-block-2 {
   margin: 3rem 0;
 
   .fa,
+  .fab,
   .fas {
     font-family: "FontAwesome";
     font-weight: 400;
@@ -2711,7 +2715,7 @@ body.page-node-page {
   width: 108%;
   left: -4%;
   top: 16rem;
-
+  overflow: hidden;
   &.slick__arrow--v {
     // left: 50%;
     // transform: translate(-50%, 0) rotate(90deg);
@@ -3657,7 +3661,7 @@ body.tarteaucitron-modal-open {
     text-align: center;
   }
 
-  .contenuprincipal article .blazy--field-image-principale--default {
+  .contenuprincipal article .blazy--field-image-principale--full {
     float: none;
     width: 100%;
     padding-left: 0;

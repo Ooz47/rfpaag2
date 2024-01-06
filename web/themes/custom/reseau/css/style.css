@@ -9169,6 +9169,10 @@ main table.table-bordered > :not(caption) > * > *,
   border-width: 0 1px;
 }
 
+.temoignagesconteneur blockquote {
+  margin: 0;
+}
+
 .btn:hover {
   color: #ffffff;
 }
@@ -9702,7 +9706,8 @@ footer ul li a {
   color: #ffffff;
 }
 
-.align-center img {
+.align-center img,
+.align-center .blazy .media--blazy img.media__element {
   display: block;
   margin-right: auto;
   margin-left: auto;
@@ -10957,14 +10962,14 @@ body.page-node-page_de_blog .actualites-view header .h2::after {
   font-weight: 600;
 }
 
-.contenuprincipal article .blazy--field-image-principale--default {
+.contenuprincipal article .blazy--field-image-principale--full {
   float: right;
   padding-left: 30px;
   width: 46%;
   margin-left: 30px;
 }
 
-.contenuprincipal article .blazy--field-image-principale--default img {
+.contenuprincipal article .blazy--field-image-principale--full img {
   max-width: 100%;
 }
 
@@ -10984,6 +10989,7 @@ aside #block-views-block-sliders-block-2 {
 }
 
 #block-views-block-contenus-structure-block-1 .fa,
+#block-views-block-contenus-structure-block-1 .fab,
 #block-views-block-contenus-structure-block-1 .fas {
   font-family: "FontAwesome";
   font-weight: 400;
@@ -11147,6 +11153,7 @@ body.page-node-page.page-node-structure3 article .slick .slick-list .slick-slide
   width: 108%;
   left: -4%;
   top: 16rem;
+  overflow: hidden;
 }
 
 .slick__arrow.slick__arrow--v {
@@ -11961,7 +11968,7 @@ body.tarteaucitron-modal-open #tarteaucitron {
   .breadcrumb #block-socialsharingblock .social-media-sharing {
     text-align: center;
   }
-  .contenuprincipal article .blazy--field-image-principale--default {
+  .contenuprincipal article .blazy--field-image-principale--full {
     float: none;
     width: 100%;
     padding-left: 0;

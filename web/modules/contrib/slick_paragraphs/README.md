@@ -202,4 +202,4 @@ Be sure to first update Blazy and Slick Media prior to this module update.
 ## READ MORE
 See the project page on drupal.org:
 
-[Slick Paragraphs](http://drupal.org/project/slick_paragraphs)
+[Slick Paragraphs](https://drupal.org/project/slick_paragraphs)

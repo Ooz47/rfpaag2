@@ -1,7 +1,9 @@
 <?php
+
 use Drupal\node\NodeInterface;
 
-function reseau_theme_suggestions_slick_alter(array &$suggestions, array $variables, $hook) {
+function reseau_theme_suggestions_slick_alter(array &$suggestions, array $variables, $hook)
+{
   $element     = $variables['element'];
 
   // Access the module settings containing all Slick info.
@@ -14,36 +16,61 @@ function reseau_theme_suggestions_slick_alter(array &$suggestions, array $variab
 
 
   if (!empty($settings['view_name'])) {
-    $suggestions[] = 'slick__' . strtr($settings['view_name'], '-', '_') . '__' . strtr($settings['current_view_mode'], '-', '_');
+
+    if (!empty($settings['instance_id'])) {
+      // $suggestions[] =  strtr($settings['instance_id'], '-', '_') ;
+
+      $viewmode = explode('-', $settings['instance_id']);
+      // Kint::dump($settings['current_view_mode']);
+
+      if ($settings['view_name'] != 'actualites') {
+
+
+        if ($viewmode['2'] == $settings['current_view_mode']) {
+
+          $suggestions[] = 'slick__' . strtr($settings['view_name'], '-', '_') . '__' . strtr($settings['current_view_mode'], '-', '_');
+        } else {
+          $suggestions[] = 'slick__sliders__' . $viewmode['2'];
+        }
+      } else {
+        $suggestions[] = 'slick__' . strtr($settings['view_name'], '-', '_') . '__' . strtr($settings['current_view_mode'], '-', '_');
+      }
+    }
   }
 
-    // Kint::dump($suggestions);
+  //  Kint::dump($settings);
+  // Kint::dump($settings['instance_id']);
+  // Kint::dump($settings['current_view_mode']);
+  //  Kint::dump($settings['current_view_mode']);
   // \Kint::dump($variables);
-  // \Kint::dump($hook);
+  // Kint::dump($suggestions);
 }
 
 
 
-function reseau_theme_suggestions_file_link_alter(array &$suggestions, array $variables, $hook) {
+function reseau_theme_suggestions_file_link_alter(array &$suggestions, array $variables, $hook)
+{
 
   // Get the node type.
   $node = \Drupal::routeMatch()->getParameter('node');
-  if(isset($node)) {
+  if (isset($node)) {
     if (is_object($node)) {
-  $type = $node->getType();
-  $suggestions[] = 'file_link__' . 'type__' . $type;
+      $type = $node->getType();
+      $suggestions[] = 'file_link__' . 'type__' . $type;
     }
-}
-}
-
-function reseau_theme_suggestions_form_alter(array &$suggestions, array $variables) {
-  $formId = $variables['element']['#id'] ?? null;
-  if ($formId) {
-      $suggestions[] = 'form__' . str_replace('-', '_', $formId);
   }
 }
 
-function reseau_theme_suggestions_form_element_alter(array &$suggestions, array $variables, $hook) {
+function reseau_theme_suggestions_form_alter(array &$suggestions, array $variables)
+{
+  $formId = $variables['element']['#id'] ?? null;
+  if ($formId) {
+    $suggestions[] = 'form__' . str_replace('-', '_', $formId);
+  }
+}
+
+function reseau_theme_suggestions_form_element_alter(array &$suggestions, array $variables, $hook)
+{
   if (
     isset($variables['element']['#form_id'])
     && isset($variables['element']['#type'])
@@ -58,81 +85,83 @@ function reseau_theme_suggestions_form_element_alter(array &$suggestions, array 
   }
 }
 
-function reseau_preprocess_media(array &$variables) {
+function reseau_preprocess_media(array &$variables)
+{
   $variables['media'] = $variables['elements']['#media'];
-  if ($variables['media']->bundle() == 'document' ) {
+  if ($variables['media']->bundle() == 'document') {
     $file = $variables['elements']['#media']->field_media_document->entity;
     $file->setFilename($variables['name']);
-}
- 
- // Fixing the media missed the quick edit attribute.
- //https://www.drupal.org/project/drupal/issues/3101267#comment-13711587
- if (!empty($variables["elements"]["#media"])) {
-  $media = $variables["elements"]["#media"];
-  $type = $media->getEntityType()->id();
-  $id = $media->id();
-  // dsm($media);
-  if (!isset($variables['attributes']['data-quickedit-entity-id'])) {
-    $variables['attributes']['data-quickedit-entity-id'] = $type . '/' . $id;
+  }
+
+  // Fixing the media missed the quick edit attribute.
+  //https://www.drupal.org/project/drupal/issues/3101267#comment-13711587
+  if (!empty($variables["elements"]["#media"])) {
+    $media = $variables["elements"]["#media"];
+    $type = $media->getEntityType()->id();
+    $id = $media->id();
+    // dsm($media);
+    if (!isset($variables['attributes']['data-quickedit-entity-id'])) {
+      $variables['attributes']['data-quickedit-entity-id'] = $type . '/' . $id;
+    }
   }
 }
 
-}
 
-
-function reseau_preprocess_node(&$variables) {
+function reseau_preprocess_node(&$variables)
+{
   $node    = $variables['node'];
-   
+
   switch ($variables['node']->getType()) {
-    
+
     case "formation":
       //  dsm($variables);
-    
-      if ( $node->hasField('field_modalites_admission') && !$node->get('field_modalites_admission')->isEmpty() ) {
-       } else {
+
+      if ($node->hasField('field_modalites_admission') && !$node->get('field_modalites_admission')->isEmpty()) {
+      } else {
         $variables['content']['field_modalites_admission_comp']['#title'] = "Modalités d'admission";
         $variables['content']['field_modalites_admission_comp']['#label_display'] = 'above';
-       }
-
-       if ( $node->hasField('field_financement') && !$node->get('field_financement')->isEmpty() ) {
-      } else {
-       $variables['content']['field_financement_complement']['#title'] = "Financement";
-       $variables['content']['field_financement_complement']['#label_display'] = 'above';
       }
 
-      if ( $node->hasField('field_modalites_evaluation') && !$node->get('field_modalites_evaluation')->isEmpty() ) {
+      if ($node->hasField('field_financement') && !$node->get('field_financement')->isEmpty()) {
       } else {
-       $variables['content']['field_modalites_eval_complement']['#title'] = "Modalités d'évaluation";
-       $variables['content']['field_modalites_eval_complement']['#label_display'] = 'above';
+        $variables['content']['field_financement_complement']['#title'] = "Financement";
+        $variables['content']['field_financement_complement']['#label_display'] = 'above';
       }
 
-      if ( $node->hasField('field_modalites_de_formation') && !$node->get('field_modalites_de_formation')->isEmpty() ) {
+      if ($node->hasField('field_modalites_evaluation') && !$node->get('field_modalites_evaluation')->isEmpty()) {
       } else {
-       $variables['content']['field_modalites_fmt_complement']['#title'] = "Modalités de formation";
-       $variables['content']['field_modalites_fmt_complement']['#label_display'] = 'above';
+        $variables['content']['field_modalites_eval_complement']['#title'] = "Modalités d'évaluation";
+        $variables['content']['field_modalites_eval_complement']['#label_display'] = 'above';
       }
 
-      if ( $node->hasField('field_pre_requis') && !$node->get('field_pre_requis')->isEmpty() ) {
+      if ($node->hasField('field_modalites_de_formation') && !$node->get('field_modalites_de_formation')->isEmpty()) {
       } else {
-       $variables['content']['field_pre_requis_complement']['#title'] = "Pré-requis";
-       $variables['content']['field_pre_requis_complement']['#label_display'] = 'above';
+        $variables['content']['field_modalites_fmt_complement']['#title'] = "Modalités de formation";
+        $variables['content']['field_modalites_fmt_complement']['#label_display'] = 'above';
+      }
+
+      if ($node->hasField('field_pre_requis') && !$node->get('field_pre_requis')->isEmpty()) {
+      } else {
+        $variables['content']['field_pre_requis_complement']['#title'] = "Pré-requis";
+        $variables['content']['field_pre_requis_complement']['#label_display'] = 'above';
       }
 
       // if ( $node->hasField('field_public_cible') && !$node->get('field_public_cible')->isEmpty() ) {
       // } else {
-       $variables['content']['field_public_cible_complement']['#title'] = "Public ciblé";
-       $variables['content']['field_public_cible_complement']['#label_display'] = 'above';
+      $variables['content']['field_public_cible_complement']['#title'] = "Public ciblé";
+      $variables['content']['field_public_cible_complement']['#label_display'] = 'above';
       // }
 
 
-    break;
+      break;
     case "something_else":
       // ...
-    break;
+      break;
   }
 }
 
-function reseau_preprocess_html(&$variables) {
+function reseau_preprocess_html(&$variables)
+{
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node instanceof NodeInterface) {
     $variables['attributes']['class'][] = 'page-node-' . $node->getType();
@@ -142,8 +171,7 @@ function reseau_preprocess_html(&$variables) {
       $terms = $node->get('field_structure_associee')->getValue();
       $variables['attributes']['class'][] = 'page-node-structure' . $terms[0]['target_id'];
     }
-  }
-  else {
+  } else {
     $variables['attributes']['class'][] = 'page-no-node';
   }
 
@@ -152,34 +180,34 @@ function reseau_preprocess_html(&$variables) {
   if ($view) {
     $current_path = \Drupal::service('path.current')->getPath();
     $internal_path = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-  
+
     // Assign it to body class 
     $variables['attributes']['class'][] = str_replace("/", "", $internal_path);
   }
 
-    // Prefetch Google fonts
-    $variables['#attached']['html_head'][] = [
-      [
-        '#tag' => 'link',
-        '#attributes' => [
-          'rel' => 'dns-prefetch',
-          'href' => 'https//fonts.googleapis.com'
-        ]
-      ],
-      "prefetch_fonts_googleapis"
-    ];
- // Preconnect Google fonts
-    $variables['#attached']['html_head'][] = [
-      [
-        '#tag' => 'link',
-        '#attributes' => [
-          'rel' => 'preconnect',
-          'href' => 'https://fonts.gstatic.com/',
-          'crossorigin' => 'anonymous',
-        ]
-      ],
-      "preconnect_fonts_gstatic"
-    ];
+  // Prefetch Google fonts
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'dns-prefetch',
+        'href' => 'https//fonts.googleapis.com'
+      ]
+    ],
+    "prefetch_fonts_googleapis"
+  ];
+  // Preconnect Google fonts
+  $variables['#attached']['html_head'][] = [
+    [
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'preconnect',
+        'href' => 'https://fonts.gstatic.com/',
+        'crossorigin' => 'anonymous',
+      ]
+    ],
+    "preconnect_fonts_gstatic"
+  ];
 }
 
 //Réécriture des termes coté public
@@ -201,13 +229,14 @@ function reseau_preprocess_views_view_field(&$variables)
 }
 
 //Ajoute formations dns bredcrumb
-function reseau_preprocess_breadcrumb(&$variables) {
-  if (($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb'] && $node->getType() =="formation") {
+function reseau_preprocess_breadcrumb(&$variables)
+{
+  if (($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb'] && $node->getType() == "formation") {
 
     $original = $variables['breadcrumb'];
-    $inserted = ['2'=> [ 'text' => "Formations", 'url' =>'/formations' ]]; 
- 
-    array_splice( $original, 2, 0, $inserted ); 
+    $inserted = ['2' => ['text' => "Formations", 'url' => '/formations']];
+
+    array_splice($original, 2, 0, $inserted);
 
     $variables['#cache']['contexts'][] = 'url.path';
 

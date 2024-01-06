@@ -50,7 +50,9 @@
 {% set slide %}
 {% block slick_slide %}
 	{% if settings.split and not settings.unslick %}
-		<div class="slide__media">{{ item.slide }}</div>
+		<div class="slide__media slick-list  slick-initialized">
+		<div class="slick-slide">
+		{{ item.slide }}
 	{% else %}
 		<div class="slick-list slick-initialized">
 			<div class="slick-slide">
@@ -134,7 +136,8 @@
 
 
 	{% if settings.split and not settings.unslick %}
-		
+		</div>
+		</div>
 	{% else %}
 		
 			</div>

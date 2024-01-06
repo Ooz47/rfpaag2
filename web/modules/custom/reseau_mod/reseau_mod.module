@@ -668,7 +668,7 @@ if (isset($form['field_act_structure_concernee']['widget'])) {
     "node_slider_edit_form", "node_slider_form",
     "node_temoignage_edit_form", "node_temoignage_form"
   );
-  // dsm($form_id);
+  // dsm($form);
   if (in_array($form_id, $nodetype)) {
 
     $form['revision']['#access'] = FALSE;
@@ -684,9 +684,14 @@ if (isset($form['field_act_structure_concernee']['widget'])) {
       $form['menu']['link']['weight']['#access'] = FALSE;
     }
 
-    if (isset($form['index_now'])) {
-      $form['index_now']['#access'] = FALSE;
+    if (isset($form['simple_sitemap_index_now'])) {
+      $form['simple_sitemap_index_now']['#access'] = FALSE;
     }
+
+    // if (isset($form['index_now'])) {
+    //   $form['index_now']['#access'] = FALSE;
+    // }
+    
     
     if (isset($form['field_date_evenement']['widget'])) {
       $form['field_date_evenement']['widget']['add_more']['#access'] = false;
@@ -768,8 +773,11 @@ if (isset($form['field_act_structure_concernee']['widget'])) {
   if (in_array($form_id, $nodetype)) {
     get_autorisation_access();
     
-   if (isset($form['index_now'])) {
-  $form['index_now']['#access'] = FALSE;
+  //  if (isset($form['index_now'])) {
+  // $form['index_now']['#access'] = FALSE;
+  // }
+  if (isset($form['simple_sitemap_index_now'])) {
+    $form['simple_sitemap_index_now']['#access'] = FALSE;
   }
   }
 
