@@ -1,6 +1,7 @@
 #webform-submission-filter-form,
 .webform-submission-bulk-form .container-inline,
-.view-copie-de-soumissions-de-webform form #edit-header
+.view-copie-de-soumissions-de-webform form #edit-header,
+.view-copie-de-soumissions-de-webform form #edit-actions--2
 {
     display:none;
 }

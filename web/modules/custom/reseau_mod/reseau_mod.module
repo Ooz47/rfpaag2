@@ -910,6 +910,7 @@ function reseau_mod_afterbuildfunction_recherche($form_element, &$form_state)
   foreach ($querystructure as $key => $value) {
     $querysettings[$key] = $value;
   }
+  // dsm($querystructure);
   //pour gérer feedback dns exposed form en fonction des critères de recherche de la page d'accueil
   // $form_element['#attached']['library'][] = 'reseau_mod/recherche';
   $form_element['#attached']['drupalSettings']['reseau_mod']['recherche'] = $querysettings;
