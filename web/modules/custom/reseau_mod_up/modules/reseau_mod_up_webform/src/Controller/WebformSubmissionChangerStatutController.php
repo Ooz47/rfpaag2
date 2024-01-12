@@ -29,7 +29,7 @@ class WebformSubmissionChangerStatutController extends ControllerBase {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function marquerTraite(WebformSubmission $submission, Request $request) {
+  public function marquerTraiteFormation(WebformSubmission $submission, Request $request) {
 
  $timezone = new \DateTimeZone('America/Guadeloupe');
  $now = DrupalDateTime::createFromTimestamp(time(),$timezone);
@@ -40,15 +40,57 @@ class WebformSubmissionChangerStatutController extends ControllerBase {
 //  dsm($now->format('Y-m-d\TH:i:sP'));
 
     $submission->setElementData('traite_le', $now->format('Y-m-d\TH:i:00P'));
-    $submission->setElementData('statut', 'Traité');
+    $submission->setElementData('statut', 'Traité-formation');
     $submission->save();
 
-    $this->messenger()->addMessage($this->t('Statut demande @serial modifié: Traité.', [
+    $this->messenger()->addMessage($this->t('Statut demande @serial modifié: Traité: Entré.e en formation.', [
       '@serial' => $submission->serial(),
     ]));
 
     return $request->query->get('destination') ? new RedirectResponse($request->query->get('destination')) : [];
   }
+
+  public function marquerTraiteAttente(WebformSubmission $submission, Request $request) {
+
+    $timezone = new \DateTimeZone('America/Guadeloupe');
+    $now = DrupalDateTime::createFromTimestamp(time(),$timezone);
+    
+    // $now->setTimezone(new \DateTimeZone('America/Guadeloupe'));
+   //  dsm($submission->getElementData('traite_le'));
+   //  dsm($now);
+   //  dsm($now->format('Y-m-d\TH:i:sP'));
+   
+       $submission->setElementData('traite_le', $now->format('Y-m-d\TH:i:00P'));
+       $submission->setElementData('statut', 'Traité-attente');
+       $submission->save();
+   
+       $this->messenger()->addMessage($this->t('Statut demande @serial modifié: Traité: En attente d’intégrer une formation.', [
+         '@serial' => $submission->serial(),
+       ]));
+   
+       return $request->query->get('destination') ? new RedirectResponse($request->query->get('destination')) : [];
+     }
+
+     public function marquerTraiteOriente(WebformSubmission $submission, Request $request) {
+
+      $timezone = new \DateTimeZone('America/Guadeloupe');
+      $now = DrupalDateTime::createFromTimestamp(time(),$timezone);
+      
+      // $now->setTimezone(new \DateTimeZone('America/Guadeloupe'));
+     //  dsm($submission->getElementData('traite_le'));
+     //  dsm($now);
+     //  dsm($now->format('Y-m-d\TH:i:sP'));
+     
+         $submission->setElementData('traite_le', $now->format('Y-m-d\TH:i:00P'));
+         $submission->setElementData('statut', 'Traité-orienté');
+         $submission->save();
+     
+         $this->messenger()->addMessage($this->t('Statut demande @serial modifié: Traité: Orienté.e vers une autre structure.', [
+           '@serial' => $submission->serial(),
+         ]));
+     
+         return $request->query->get('destination') ? new RedirectResponse($request->query->get('destination')) : [];
+       }
 
   public function marquerEncours(WebformSubmission $submission, Request $request) {
    

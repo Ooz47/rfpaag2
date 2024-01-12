@@ -9,6 +9,13 @@
  * @ingroup themeable
  */
 #}
-<span class="conteneur-retour"><a class="btn btn-retour" href="/admin/structure/webform/manage/contact_greta_cfa_de_la_guadelou/results/submissions">Retour aux résultats</a></span>
+{# {{ kint(form) }} #}
+{%
+  set backend = form.navigation
+%}
 
+{% if backend %} 
+
+<span class="conteneur-retour"><a class="btn btn-retour" href="/admin/structure/webform/manage/contact_greta_cfa_de_la_guadelou/results/submissions">Retour aux résultats</a></span>
+{% endif %}
 {{ form }}

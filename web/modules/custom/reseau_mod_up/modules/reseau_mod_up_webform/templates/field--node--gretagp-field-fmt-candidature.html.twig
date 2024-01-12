@@ -51,11 +51,11 @@
   ]
 %}
 
-{%
+{# {%
   set structure_id = element['#object'].get('field_structure_associee').value['0']['target_id']
-%}
+%} #}
 
-{% if structure_id == 1 %}
+{# {% if structure_id == 1 %}
   {%
     set string_link = 'greta-guadeloupe'
   %}
@@ -81,15 +81,18 @@
   %}
 {% endif %}
 
-{% if structure_id == 1 %}
+{% if structure_id == 1 %} #}
+  {%
+    set string_link = 'greta-guadeloupe'
+  %}
   {%
       set custom_link =  url('<front>')| render ~ string_link ~'/contactez-nous?formations='~  element['#object'].get('nid').value ~ '&secteurs=' ~ element['#object'].get('field_fmt_pole_greta_gp').value['0']['target_id'] ~ '#block-formulairedecontactgretaguadeloupe'
   %}
-{% else %}
+{# {% else %}
    {%
      set custom_link =  url('<front>')| render ~ string_link ~'/pre-inscription?objet='~  element['#object'].get('nid').value 
   %}
-{% endif %}
+{% endif %} #}
 
 
 {# {{ kint(entity_type) }} #}

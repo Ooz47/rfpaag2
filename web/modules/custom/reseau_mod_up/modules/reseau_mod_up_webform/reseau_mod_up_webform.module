@@ -52,6 +52,8 @@ function reseau_mod_up_webform_webform_submission_form_alter(array &$form, FormS
       //  unset($secteurs['#states']); 
       //  unset($formations['#states']); 
       $formations['#default_value'] = $formation_get;
+      $secteurs['#attributes'] = array('disabled' => 'disabled');
+      $formations['#attributes'] = array('disabled' => 'disabled');
     } else {
 
 
@@ -273,18 +275,45 @@ function reseau_mod_up_webform_entity_operation(EntityInterface $submission)
     // dsm($submission->get('webform_id')->entity);
     // dsm($submission->get('webform_id')->entity->get('id'));
     if ($submission->get('webform_id')->entity->get('id') == 'contact_greta_cfa_de_la_guadelou') {
-      if ($submission->getElementData('statut') !== 'Traité') {
+      if ($submission->getElementData('statut') !== 'Traité-formation') {
 
-        $operations['traite'] = [
-          'title' => t('Marquer comme traité'),
+        $operations['traiteformation'] = [
+          'title' => t('Marquer comme Traité: Entré.e en formation'),
           'weight' => 15,
-          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraite', [
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraiteformation', [
             'submission' => $submission->id(),
           ], [
             'query' => \Drupal::destination()->getAsArray(),
           ]),
         ];
       }
+
+      if ($submission->getElementData('statut') !== 'Traité-attente') {
+
+        $operations['traiteattente'] = [
+          'title' => t('Marquer comme Traité: En attente d’intégrer une formation'),
+          'weight' => 15,
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraiteattente', [
+            'submission' => $submission->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+          ]),
+        ];
+      }
+
+      if ($submission->getElementData('statut') !== 'Traité-orienté') {
+
+        $operations['traiteoriente'] = [
+          'title' => t('Marquer comme Traité: Orienté.e vers une autre structure'),
+          'weight' => 15,
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraiteoriente', [
+            'submission' => $submission->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+          ]),
+        ];
+      }
+
       if ($submission->getElementData('statut') !== 'En cours') {
         $operations['encours'] = [
           'title' => t('Marquer comme en cours'),
