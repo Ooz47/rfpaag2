@@ -50,9 +50,9 @@ function reseau_mod_up_pageprivee_theme_suggestions_field_alter(array &$suggesti
         $node = \Drupal::routeMatch()->getParameter('node');
         if ($node instanceof \Drupal\node\NodeInterface) {
           if (($node->hasField("field_password")) && (!empty($node->get('field_password')->getValue()))) {
-        dsm($node->get('field_password')->getValue());
+        // dsm($node->get('field_password')->getValue());
         if ($node->get('field_password')[0]->get('is_protected')->getValue() == true) {
-          dsm($node->get('field_password')[0]->get('is_protected')->getValue());
+          // dsm($node->get('field_password')[0]->get('is_protected')->getValue());
           $suggestions[] = 'field__node__title__page_private_' . $element['#view_mode'];
         }
        

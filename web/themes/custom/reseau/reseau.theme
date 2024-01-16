@@ -162,6 +162,8 @@ function reseau_preprocess_node(&$variables)
 
 function reseau_preprocess_html(&$variables)
 {
+  $view_mode = $variables;
+  // dsm($view_mode);
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node instanceof NodeInterface) {
     $variables['attributes']['class'][] = 'page-node-' . $node->getType();

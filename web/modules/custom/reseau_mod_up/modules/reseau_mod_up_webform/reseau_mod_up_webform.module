@@ -42,18 +42,27 @@ function reseau_mod_up_webform_webform_submission_form_alter(array &$form, FormS
     $formations['#prefix'] = '<div id="' . $formations_wrapper_id . '">';
     $formations['#suffix'] = '</div>';
 
-    $formation_get = Xss::filter(\Drupal::request()->get('formations'));
-    $secteur_get = Xss::filter(\Drupal::request()->get('secteurs'));
+    $formation_post = Xss::filter(\Drupal::request()->get('formations'));
+    $secteur_post = Xss::filter(\Drupal::request()->get('secteurs'));
 
-    if ($secteur_get) {
-      $selected_secteur = $secteur_get;
+    if ($secteur_post) {
+      $selected_secteur = $secteur_post;
 
       // dsm($form['elements']['objet_select']);
       //  unset($secteurs['#states']); 
       //  unset($formations['#states']); 
-      $formations['#default_value'] = $formation_get;
+      $formations['#default_value'] = $formation_post;
+
+      $formation_get = Xss::filter(\Drupal::request()->query->get('formations'));
+    $secteur_get = Xss::filter(\Drupal::request()->query->get('secteurs'));
+    if ($secteur_get) {
       $secteurs['#attributes'] = array('disabled' => 'disabled');
+    }
+    if ($formation_get) {
       $formations['#attributes'] = array('disabled' => 'disabled');
+    }
+  
+   
     } else {
 
 

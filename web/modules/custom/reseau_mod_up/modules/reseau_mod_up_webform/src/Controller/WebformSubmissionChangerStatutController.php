@@ -115,7 +115,7 @@ class WebformSubmissionChangerStatutController extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function access(WebformSubmission $submission) {
-    return AccessResult::allowedIf(!$submission->isDraft() && array_intersect(array('administrator','gestionnaire_formulaire_greta_guadeloupe'), $this->currentUser()->getRoles())!== []);
+    return AccessResult::allowedIf(!$submission->isDraft() && array_intersect(array('administrator','gestionnaire_formulaire_greta_guadeloupe','webmaster_reseau'), $this->currentUser()->getRoles())!== []);
   }
 
 }
