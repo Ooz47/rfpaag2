@@ -35,3 +35,11 @@ function reseau_mod_up_page_attachments_alter(array &$attachments)
 $attachments['#attached']['library'][] = 'reseau_mod_up/extra.adminreseauup';
 
 }
+
+function reseau_mod_up_preprocess_html(&$variables)
+{
+
+    foreach ($variables['user']->getRoles() as $role) {
+        $variables['attributes']['class'][] = 'role-' . $role;
+      }
+}
