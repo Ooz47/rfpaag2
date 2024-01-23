@@ -5,6 +5,7 @@ global-styling:
       # css/layout.css: {}
       css/style.css: {}
       css/print.css: { media: print }
+      css/fa-all.min.css : {}
   js:
     bootstrap/dist/js/bootstrap.bundle.min.js: {}
     # js/domaine-select.js: {}

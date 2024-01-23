@@ -10991,7 +10991,7 @@ aside #block-views-block-sliders-block-2 {
 #block-views-block-contenus-structure-block-1 .fa,
 #block-views-block-contenus-structure-block-1 .fab,
 #block-views-block-contenus-structure-block-1 .fas {
-  font-family: "FontAwesome";
+  font-family: "FontAwesome" !important;
   font-weight: 400;
 }
 
