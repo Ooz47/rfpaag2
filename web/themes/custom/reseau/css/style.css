@@ -11343,6 +11343,11 @@ body.page-node-formation .contenuprincipal .field_fmt_information::before {
   transition-property: transform, opacity;
 }
 
+body.page-node-formation .contenuprincipal .blazy--field-fmt-image--full img {
+  border-radius: 9px;
+  margin: 10px 0;
+}
+
 body.page-node-formation .contenuprincipal .field_fmt_contacts {
   text-align: left;
 }
@@ -12018,6 +12023,32 @@ body.tarteaucitron-modal-open #tarteaucitron {
 
 .node--unpublished {
   background-color: #ffffffd9;
+}
+
+body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs {
+  display: flex;
+}
+
+body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list {
+  flex-direction: column;
+  width: 26%;
+}
+
+body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list .horizontal-tab-button {
+  border-radius: 0;
+}
+
+body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list .horizontal-tab-button a {
+  padding: 0.6em 1em;
+  border-radius: 0;
+}
+
+body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-panes {
+  width: 74%;
+}
+
+body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-panes .resultat-formation.col-xl-2 {
+  width: 25%;
 }
 
 /**

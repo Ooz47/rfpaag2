@@ -99,14 +99,14 @@
       </div>
     </footer>
   {% endif %}
-{# {{ kint(node.changed) }} #}
+
 
   <div{{ content_attributes }}>
     {{ content }}
   </div>
 
 </article>
-<a href="{{ url('<front>')|render ~ 'entity_pdf/node/' ~ node.id ~ '/pdf' }}" target ="_blank">Lien vers pdf généré par le site </a>
+<a href="{{ url('<front>')|render ~ 'entity_pdf/node/' ~ node.id ~ '/export_pdf' }}" target ="_blank">Lien vers pdf généré par le site </a>
 
 {% set datemisajour = node.getChangedTime|format_date('short') %}
 {% trans %} <small style="color:#b3b6bb;float:right;">Dernière mise à jour: {{ datemisajour }}</small> {% endtrans %}

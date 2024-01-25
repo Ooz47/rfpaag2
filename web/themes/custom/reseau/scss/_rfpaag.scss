@@ -2911,7 +2911,10 @@ body.page-node-formation {
       }
 
     }
-
+.blazy--field-fmt-image--full img {
+  border-radius: 9px;
+  margin:10px 0;
+}
     .field_fmt_contacts {
       text-align: left;
 
@@ -3728,4 +3731,38 @@ body.tarteaucitron-modal-open {
 
 .node--unpublished {
   background-color: $grisblanc;
+}
+
+
+
+body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper {
+
+.horizontal-tabs {
+  display: flex;
+  .horizontal-tabs-list {
+    flex-direction: column;
+    width: 26%;
+  
+  .horizontal-tab-button{
+    border-radius: 0;
+
+   a {
+      padding: 0.6em 1em;
+      border-radius: 0;
+  }
+  }
+  
+  
+  }
+  .horizontal-tabs-panes{
+    width: 74%;
+
+
+    .resultat-formation.col-xl-2{
+      width: 25%
+    }
+  }
+}
+
+
 }

@@ -809,6 +809,19 @@ if (isset($form['field_act_structure_concernee']['widget'])) {
     $form['expanded']['#access'] = FALSE;
     $form['view_mode']['#access'] = FALSE;
   }
+
+  //  /* Gestion edit media */
+
+  $taxonomytermformtype = array(
+    "taxonomy_term_modalite_admission_form",
+    "taxonomy_term_type_de_certification_profession_form"
+  );
+  // dsm($form_id);
+  if (in_array($form_id, $taxonomytermformtype)) {
+   
+    $form['status']['#access'] = FALSE;
+  }
+
 } //form_alter
 
 

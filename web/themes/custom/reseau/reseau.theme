@@ -136,7 +136,7 @@ function reseau_preprocess_node(&$variables)
 
       if ($node->hasField('field_modalites_de_formation') && !$node->get('field_modalites_de_formation')->isEmpty()) {
       } else {
-        $variables['content']['field_modalites_fmt_complement']['#title'] = "Modalités de formation";
+        $variables['content']['field_modalites_fmt_complement']['#title'] = "Méthodes pédagogiques";
         $variables['content']['field_modalites_fmt_complement']['#label_display'] = 'above';
       }
 
@@ -148,10 +148,19 @@ function reseau_preprocess_node(&$variables)
 
       // if ( $node->hasField('field_public_cible') && !$node->get('field_public_cible')->isEmpty() ) {
       // } else {
-      $variables['content']['field_public_cible_complement']['#title'] = "Public ciblé";
+      $variables['content']['field_public_cible_complement']['#title'] = "Public cible";
       $variables['content']['field_public_cible_complement']['#label_display'] = 'above';
       // }
-
+      // dsm($node->nid->value);
+      if (($node->nid->value == '531') || ($node->nid->value == '268')) {
+      if ($node->hasField('field_fmt_image') && !$node->get('field_fmt_image')->isEmpty()) {
+        // dsm($variables['content']['field_fmt_image']['#weight']);
+        $variables['content']['field_fmt_image']['#weight'] = '2';
+      } else {
+   
+   
+      }
+      }
 
       break;
     case "something_else":
