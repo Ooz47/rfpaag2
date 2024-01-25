@@ -1,0 +1,332 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - node.getCreatedTime() will return the node creation timestamp.
+ *   - node.hasField('field_example') returns TRUE if the node bundle includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   - node.isPublished() will return whether the node is published or not.
+ *   Calling other methods, such as node.delete(), will result in an exception.
+ *   See \Drupal\node\Entity\Node for a full list of public properties and
+ *   methods for the node object.
+ * - label: (optional) The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: (optional) Themed creation date field.
+ * - author_name: (optional) Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
+ */
+#}
+{%
+  set classes = [
+	not node.isPublished() ? 'node--unpublished',
+	'structure-' ~ node.field_structure_associee.target_id|render,
+  ]
+%}
+<article{{attributes.addClass(classes)}}>
+	{% if not node.isPublished %}
+		<div class="unpublished" role="alert">
+			-- Contenu non-publié --
+		</div>
+	{% endif %}
+	{# 
+						  {{ title_prefix }}
+						  {% if label and not page %}
+						    <h2{{ title_attributes }}>
+						      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+						    </h2>
+						  {% endif %}
+						  {{ title_suffix }} #}
+
+	{% if display_submitted %}
+		<footer>
+			{{ author_picture }}
+			<div{{author_attributes}}>
+				{% trans %}Submitted by
+				{{ author_name }}
+				on
+				{{ date }}{% endtrans %}
+				{{ metadata }}
+			</div>
+		</footer>
+	{% endif %}
+	{# {{ kint(node.id) }} #}
+	{# {{ kint(node.field_structure_associee.target_id) }} #}
+	{# {{ drupal_field('name', 'taxonomy_term', 2) }} #}
+	{# {{ drupal_entity('taxonomy_term', 2) }}
+				{{ drupal_field('name', 'taxonomy_term', 2) }}
+				{{ drupal_entity('node', 107, 'teaser') }} #}
+		<div{{content_attributes}}>
+			<div class="entetepdf"> 
+			<div class="col-logo">
+				{{ drupal_view('sliders', 'block_2', node.id) }}
+			</div>
+			{# ssddd #}
+			<div class="column_droite_entete">
+				{# ssddd #}
+				<div class="vignettes_formation">
+					{# {{ drupal_field('field_vignettes_formation', 'node', node.id, 'colorbox_petit' ) }}
+										{{ drupal_entity('media', 634, 'url_du_fichier')|render|striptags|trim|lower }}
+										{{ kint(node.field_vignettes_formation.entity.field_media_image) }}
+										{{ node.field_vignettes_formation.target_id }} #}
+
+					{# {{ 'public/2023-02/handicap.png'|image_style('media_library') }} #}
+					{# {{ drupal_image('public/2023-02/handicap.png', 'temoignage_220_220') }} #}
+
+					{% for field_vignettes_formation in node.field_vignettes_formation %}
+
+						{% set urlvignette %}
+						{{ drupal_entity('media', field_vignettes_formation.target_id|render, 'url_du_fichier') }}
+						{% endset %}
+						<div class="img">
+					<img src="{{urlvignette|render|striptags|trim|lower}}" alt="first" width="80"/> 
+					</div>
+						{# {{ '{{urlvignette|render|striptags|trim|lower}}'|image_style('media_library') }} #}
+					{% endfor %}
+					{# {% set idvignette =  field_vignettes_formation.target_id  %} #}
+
+					{# {{ drupal_field('field_vignettes_formation', 'node', node.id, {type: 'entity_reference_entity_view', settings: {image_style: 'temoignage_220_220'}})  }} #}
+				</div>
+			
+				{# {{ kint(content) }} #}
+			</div>
+
+				{{ title_prefix }}
+				{% if label and not page %}
+					<h2{{title_attributes}}>
+						<a href="{{ url }}" rel="bookmark">{{ label }}</a>
+					</h2>
+				{% endif %}
+				{{ title_suffix }}
+		</div>
+		{# {{ node.id }} #}
+		{# {{ kint(node.field_structure_associee) }} #}
+		{# {{ node.field_fmt_grand_champ.target_id }} #}
+		{# {{ drupal_field('name', 'taxonomy_term', node.field_fmt_grand_champ.target_id) }} #}
+
+		{# <div>
+							<div class="column_gauche">
+				      <div class="field_node_formation">
+								{% if node.field_code_cpf.value %}
+									<div class="inline-block">
+										<div class="label">{{ node.field_code_cpf.fielddefinition.label }}
+										</div>
+										{{ node.field_code_cpf.value }}
+									</div>
+								{% endif %}
+								{% if node.field_formacode.value %}
+									<div class="inline-block">
+										<div class="label">{{ node.field_formacode.fielddefinition.label }}
+										</div>
+										{{ node.field_formacode.value }}
+									</div>
+								{% endif %}
+								{% if node.field_fmt_code_diplome.value %}
+									<div class="inline-block">
+										<div class="label">{{ node.field_fmt_code_diplome.fielddefinition.label }}
+										</div>
+										{{ node.field_fmt_code_diplome.value }}
+									</div>
+								{% endif %}
+								{% if node.field_fmt_code_rncp.value %}
+									<div class="inline-block">
+										<div class="label">{{ node.field_fmt_code_rncp.fielddefinition.label }}
+										</div>
+										{{ node.field_fmt_code_rncp.value }}
+									</div>
+								{% endif %}
+					</div>
+								<div class="field_node_formation">
+									<div class="label">{{ node.field_fmt_grand_champ.fielddefinition.label }}
+									</div>
+							
+									{{ drupal_field('field_fmt_grand_champ', 'node', node.id ) }}
+								</div>
+				
+				        	<div class="field_node_formation">
+									{{ drupal_field('field_domaine_activite', 'node', node.id ) }}
+								</div>
+				        	
+								{% if node.field_dates_previsionnelle.value %}
+				        	<div class="field_node_formation">
+									{{ drupal_field('field_dates_previsionnelle', 'node', node.id ) }}
+								</div>
+				        {% endif %}
+				
+				        {% if node.field_lieux.value %}
+				        	<div class="field_node_formation">
+									{{ drupal_field('field_lieux', 'node', node.id ) }}
+								</div>
+				        {% endif %}
+				          {% if node.field_duree_de_la_formation.value %}
+				        	<div class="field_node_formation">
+									{{ drupal_field('field_duree_de_la_formation', 'node', node.id ) }}
+								</div>
+				        {% endif %}
+				          {% if node.field_heures_en_centre.value %}
+				        	<div class="field_node_formation">
+				          Heures en centre : 	{{ node.field_heures_en_centre.value|striptags }}
+				
+								</div>
+				        {% endif %}
+				          {% if node.field_heures_en_entreprise.value %}
+				        	<div class="field_node_formation">
+				Heures en entreprise : {{ node.field_heures_en_entreprise.value|striptags  }}
+								</div>
+				        {% endif %}
+				
+				
+				          {% if node.field_nombre_de_participants.value %}
+				        	<div class="field_node_formation">
+									{{ drupal_field('field_nombre_de_participants', 'node', node.id ) }}
+								</div>
+				        {% endif %}
+				
+				
+							</div>
+							<!--column gauche-->
+							<div class="column_droite"></div>
+				
+						</div> #}
+
+
+	{# <div class="contenus"> #}
+	{{ content }}
+	{# </div> #}
+		{# <div class="column left" >
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br> Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								    Some content!<br>
+								</div>
+								
+								<div class="column">
+								    Something
+								</div> #}
+		{# {{ kint(node) }} #}{# <div style="
+														    display: table;
+														    width: 100%;
+														">
+														<div style="
+														    width: 30%;
+														    display: table-cell;
+														    background: aquamarine;
+														">
+														Justo bibendum sodales conubia, hac sociosqu accusantium eget fusce accumsan reprehenderit quae? Nam labore, imperdiet aute! Sint numquam! Habitant illum nulla felis incidunt commodo eu ratione laborum erat sunt dis, quod deleniti, risus sollicitudin dolor wisi convallis sem sociis illo mus ullamcorper posuere incididunt ab. Litora, diamlorem suscipit? Exercitation vero, sem consectetur egestas aperiam. Recusandae. Taciti sed etiam, elit rerum rhoncus nullam officia earum reiciendis, veritatis ultrices consectetur, vivamus quod occaecati dignissim neque mi taciti pellentesque. Vulputate, unde congue praesentium ullamco dui vitae lorem, ullam. Adipisci suspendisse semper, fames dis, numquam. Orci feugiat adipisci! Suscipit wisi? Metus elit repellendus quae.
+														
+														Ultricies maecenas dolor inventore quis consectetuer, sociosqu vero taciti? Posuere. Soluta laboriosam, iaculis similique! Molestias magnis sociosqu nostrud, dis. Hendrerit? Imperdiet metus magnam sequi diamlorem expedita ante do? Luctus sem cillum aliquid tellus metus illo, dolore, illo minima taciti magnis ante occaecat saepe commodi penatibus! Aliquip nostrum accusantium. Eros quam reprehenderit architecto? Commodi numquam excepteur ante, soluta eaque, tempora, fugit, cum odio nemo lobortis netus nibh dolores litora, litora ipsam! Alias faucibus! Recusandae elementum illum suscipit. A aliquam, saepe ex? Neque, nullam aliqua condimentum, consectetuer facere parturient. Aenean hymenaeos volutpat, leo, harum mattis voluptas ab fermentum eligendi ex deleniti? Necessitatibus.
+														
+														Libero tenetur culpa, proident magni, exercitation, wisi inventore, dolorum occaecati primis accusamus provident erat fugit eaque. Eleifend odio optio mollitia suscipit repellendus possimus commodi, ac dignissimos, dolor inceptos totam torquent porro ipsam ipsa. Eum? Metus lorem occaecat maxime reiciendis odio, morbi commodo, maxime sociosqu facilis? Sem soluta faucibus! Nibh amet sem magni. Vestibulum consequatur primis? Pulvinar. Litora per provident sodales? Eos viverra ipsum recusandae commodo vestibulum nostra quaerat ullamco voluptatum! Vivamus! Congue! Nunc doloribus tempore 
+														</div>
+														<div style="
+														    display: table-cell;
+														">
+														Justo bibendum sodales conubia, hac sociosqu accusantium eget fusce accumsan reprehenderit quae? Nam labore, imperdiet aute! Sint numquam! Habitant illum nulla felis incidunt commodo eu ratione laborum erat sunt dis, quod deleniti, risus sollicitudin dolor wisi convallis sem sociis illo mus ullamcorper posuere incididunt ab. Litora, diamlorem suscipit? Exercitation vero, sem consectetur egestas aperiam. Recusandae. Taciti sed etiam, elit rerum rhoncus nullam officia earum reiciendis, veritatis ultrices consectetur, vivamus quod occaecati dignissim neque mi taciti pellentesque. Vulputate, unde congue praesentium ullamco dui vitae lorem, ullam. Adipisci suspendisse semper, fames dis, numquam. Orci feugiat adipisci! Suscipit wisi? Metus elit repellendus quae.
+														
+														Ultricies maecenas dolor inventore quis consectetuer, sociosqu vero taciti? Posuere. Soluta laboriosam, iaculis similique! Molestias magnis sociosqu nostrud, dis. Hendrerit? Imperdiet metus magnam sequi diamlorem expedita ante do? Luctus sem cillum aliquid tellus metus illo, dolore, illo minima taciti magnis ante occaecat saepe commodi penatibus! Aliquip nostrum accusantium. Eros quam reprehenderit architecto? Commodi numquam excepteur ante, soluta eaque, tempora, fugit, cum odio nemo lobortis netus nibh dolores litora, litora ipsam! Alias faucibus! Recusandae elementum illum suscipit. A aliquam, saepe ex? Neque, nullam aliqua condimentum, consectetuer facere parturient. Aenean hymenaeos volutpat, leo, harum mattis voluptas ab fermentum eligendi ex deleniti? Necessitatibus.
+														
+														Libero tenetur culpa, proident magni, exercitation, wisi inventore, dolorum occaecati primis accusamus provident erat fugit eaque. Eleifend odio optio mollitia suscipit repellendus possimus commodi, ac dignissimos, dolor inceptos totam torquent porro ipsam ipsa. Eum? Metus lorem occaecat maxime reiciendis odio, morbi commodo, maxime sociosqu facilis? Sem soluta faucibus! Nibh amet sem magni. Vestibulum consequatur primis? Pulvinar. Litora per provident sodales? Eos viverra ipsum recusandae commodo vestibulum nostra quaerat ullamco voluptatum! Vivamus! Congue! Nunc doloribus tempore lobortis excepteur! Condimentum, urna lacinia, exercitationem dis mollitia fusce corporis consequatur dignissimos placeat? Habitant hic, sapien? Error aliquet inceptos odio tenetur nullam ullamcorper natoque. Distinctio.
+														</div>
+														
+														</div> #}
+
+
+	</div>
+
+</article>
+
+{% set datemisajour = node.getChangedTime|format_date('short') %}
+{% trans %}
+<small style="color:#b3b6bb;float:right;">Dernière mise à jour:
+	{{ datemisajour }}</small>
+{% endtrans %}

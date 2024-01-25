@@ -1,0 +1,44 @@
+<?php
+
+use Drupal\views\ViewExecutable;
+
+/**
+ * @file
+ * Contains reseau_mod_up_exportpdf.module.
+ */
+
+
+/**
+ * Implements hook_theme().
+ */
+function reseau_mod_up_exportpdf_theme() {
+  $theme['htmlpdf'] = [
+    'base hook' => 'htmlpdf',
+  ];
+
+  $theme['node__formation__export_pdf'] = [
+    'base hook' => 'node',
+  ];
+
+  return $theme;
+}
+
+
+
+function reseau_mod_up_exportpdf_mpdf_config_alter(&$mpdf_config){
+  // dsm($data);
+  // $data['tempDir'] = \Drupal::service('file_system')->realpath(file_default_scheme() . "://temp_pdf_preview");
+
+  // $mpdf_config['fontDir'] = __DIR__ . '/custom/font/directory';
+  $mpdf_config['fontDir'][] = __DIR__ . '/fonts';
+  $mpdf_config['fontdata']["opensans"] = 
+     array(
+    'R' => "OpenSans-Regular.ttf",
+    'B' => "OpenSans-SemiBold.ttf",
+    'I' => "OpenSans-Italic.ttf",
+    'BI' => "OpenSans-SemiBoldItalic.ttf",
+);
+
+  // return dsm($mpdf_config);
+  return $mpdf_config;
+  }
