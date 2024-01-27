@@ -12025,6 +12025,7 @@ body.tarteaucitron-modal-open #tarteaucitron {
   background-color: #ffffffd9;
 }
 
+/*STRUCTURE COLONNE*/
 body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs {
   display: flex;
 }
@@ -12049,6 +12050,15 @@ body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper 
 
 body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-panes .resultat-formation.col-xl-2 {
   width: 25%;
+}
+
+/*CFAPAG */
+.field_fmt_candidature.contact-cfapag {
+  background: #f5f9fc4f;
+}
+
+.field_fmt_candidature.contact-cfapag a::before {
+  content: "\f0e0";
 }
 
 /**

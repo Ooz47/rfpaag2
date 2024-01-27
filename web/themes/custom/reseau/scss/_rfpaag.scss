@@ -3734,7 +3734,7 @@ body.tarteaucitron-modal-open {
 }
 
 
-
+/*STRUCTURE COLONNE*/
 body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper {
 
 .horizontal-tabs {
@@ -3766,3 +3766,12 @@ body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper 
 
 
 }
+
+/*CFAPAG */
+
+.field_fmt_candidature.contact-cfapag {
+  background: #f5f9fc4f;
+  a::before {
+    content: "\f0e0";
+  }
+}                                                                                         

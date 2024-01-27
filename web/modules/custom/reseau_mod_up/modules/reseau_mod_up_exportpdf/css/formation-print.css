@@ -258,6 +258,12 @@ article.structure-4 .column_droite a {
 article.structure-5 .label
 {
   color: #f0e4b0;
+  text-shadow: 1px 1px #958129;
+}
+
+article.structure-5 .column_droite .label
+{
+  text-shadow: 1px 1px #958129;
 }
 
 article.structure-5 .column_gauche {

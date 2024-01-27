@@ -196,6 +196,10 @@ function reseau_mod_up_webform_theme()
   $theme['field__node__gretagp_field_fmt_candidature'] = [
     'base hook' => 'field',
   ];
+
+  $theme['field__node__cfapag_field_fmt_candidature'] = [
+    'base hook' => 'field',
+  ];
   return $theme;
 }
 
@@ -217,6 +221,11 @@ function reseau_mod_up_webform_theme_suggestions_field_alter(array &$suggestions
         $suggestions[] = 'field__node__gretagp_field_fmt_candidature';
       //   $suggestions[] = 'field__node__title__page_private_' . $element['#view_mode'];
       }
+
+      if ($element['#object']->get('field_structure_associee')->target_id == '4') {
+        // dsm($element['#object']->get('field_structure_associee')->target_id);
+        $suggestions[] = 'field__node__cfapag_field_fmt_candidature';
+      }
       }
     }
   }
@@ -230,6 +239,17 @@ function reseau_mod_up_webform_page_attachments_alter(array &$attachments)
   if ($admin_theme_name == 'Seven') {
     $attachments['#attached']['library'][] = 'reseau_mod_up_webform/extra.webform';
   }
+
+  $webform = \Drupal::routeMatch()->getParameter('webform');
+  if ($webform instanceof \Drupal\webform\WebformInterface) {
+    // dsm($webform);
+    // dsm($webform->get('id'));
+    if ($webform->get('id') == 'pre_inscription_cfapag') {
+    
+      $attachments['#attached']['library'][] = 'reseau_mod_up_webform/extra.cfapag';
+    }
+  }
+
 
   $attachments['#attached']['library'][] = 'reseau_mod_up_webform/extra.webformcustom';
 }
