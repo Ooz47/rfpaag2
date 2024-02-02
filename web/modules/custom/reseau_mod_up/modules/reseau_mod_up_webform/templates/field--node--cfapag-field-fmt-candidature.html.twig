@@ -94,7 +94,7 @@
     set string_link = 'cfapag'
   %}
   {%
-      set custom_link =  url('<front>')| render ~ string_link ~'/inscription?objet='~  element['#object'].get('nid').value
+      set custom_link =  url('<front>')| render ~ string_link ~'/candidature?objet='~  element['#object'].get('nid').value
   %}
     {%
       set contact_link =  url('<front>')| render ~ string_link ~'/nous-contacter#block-formulairedecontactcfapag'

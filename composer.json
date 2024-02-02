@@ -52,6 +52,7 @@
         "drupal/pathauto": "^1.8",
         "drupal/rabbit_hole": "^1.0@beta",
         "drupal/recaptcha": "^3.0",
+        "drupal/recreate_block_content": "^3.0",
         "drupal/redirect": "^1.6",
         "drupal/search_api": "^1.20",
         "drupal/seckit": "^2.0",
