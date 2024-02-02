@@ -12026,29 +12026,32 @@ body.tarteaucitron-modal-open #tarteaucitron {
 }
 
 /*STRUCTURE COLONNE*/
-body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs {
+body.page-node-formation.page-node-verticale article .field-group-tabs-wrapper .horizontal-tabs {
   display: flex;
+  align-items: flex-start;
 }
 
-body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list {
+body.page-node-formation.page-node-verticale article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list {
   flex-direction: column;
   width: 26%;
+  position: sticky;
+  top: 120px;
 }
 
-body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list .horizontal-tab-button {
+body.page-node-formation.page-node-verticale article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list .horizontal-tab-button {
   border-radius: 0;
 }
 
-body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list .horizontal-tab-button a {
+body.page-node-formation.page-node-verticale article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-list .horizontal-tab-button a {
   padding: 0.6em 1em;
   border-radius: 0;
 }
 
-body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-panes {
+body.page-node-formation.page-node-verticale article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-panes {
   width: 74%;
 }
 
-body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-panes .resultat-formation.col-xl-2 {
+body.page-node-formation.page-node-verticale article .field-group-tabs-wrapper .horizontal-tabs .horizontal-tabs-panes .resultat-formation.col-xl-2 {
   width: 25%;
 }
 

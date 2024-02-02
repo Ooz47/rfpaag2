@@ -182,6 +182,12 @@ function reseau_preprocess_html(&$variables)
       $terms = $node->get('field_structure_associee')->getValue();
       $variables['attributes']['class'][] = 'page-node-structure' . $terms[0]['target_id'];
     }
+    // dsm((int)$node->id());
+    // dsm((int)$node->id() % 2);
+    if ((int)$node->id() % 2 == 0) {
+      $variables['attributes']['class'][] = 'page-node-verticale';
+    }
+
   } else {
     $variables['attributes']['class'][] = 'page-no-node';
   }

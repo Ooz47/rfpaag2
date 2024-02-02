@@ -43,6 +43,18 @@
         });
       });
 
+      function scrollToAnchor(){
+        var aTag = $(".horizontal-tabs-panes");
+        $('html,body').animate({scrollTop: aTag.offset().top - 100},400);
+    }
+    $(context).find(".page-node-verticale .horizontal-tabs-list").once("some-arbitrary-but-unique-keylast").each(function () {
+      $(document).on("click", ".horizontal-tab-button", function (e) {
+        // e.preventDefault();
+        scrollToAnchor();
+      });
+    });
+    
+
 
       /* Cookie accessibilité */
       function createCookie(name, value, days) {

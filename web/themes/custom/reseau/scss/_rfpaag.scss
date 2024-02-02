@@ -3736,13 +3736,16 @@ body.tarteaucitron-modal-open {
 
 
 /*STRUCTURE COLONNE*/
-body.page-node-formation.page-node-structure1 article .field-group-tabs-wrapper {
+body.page-node-formation.page-node-verticale article .field-group-tabs-wrapper {
 
 .horizontal-tabs {
   display: flex;
+  align-items: flex-start;
   .horizontal-tabs-list {
     flex-direction: column;
     width: 26%;
+    position: sticky;
+  top: 120px;
   
   .horizontal-tab-button{
     border-radius: 0;
