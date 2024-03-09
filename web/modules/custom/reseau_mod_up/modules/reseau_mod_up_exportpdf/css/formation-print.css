@@ -32,16 +32,16 @@ body {
 body {
   font-family: 'DejaVuSans';
   font-family: 'Open Sans';
-  font-size: 15px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 20px;
   /* letter-spacing: -0.5px; */
 }
 h1,h2,h3,h4,h5,h6 {
-  font-size: 15x;
+  font-size: 13x;
   line-height: 20px;
 }
 .libelle-resultat {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
 }
 
@@ -70,10 +70,6 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 
-.contenus {
-  /* padding-top: 100px; */
-  /* margin-top: -200px; */
-}
 
 .column_gauche,
 .column_droite {
@@ -89,22 +85,19 @@ h1,h2,h3,h4,h5,h6 {
 
 .vignettes_formation img{
   width: 100px;
-  /* height: 75px; */
-  /* opacity: 0.5; */
-  /* float: left; */
 }
+
 .vignettes_formation .img{
   float: right;
   width: 100px;
 }
 
 
-.vignettes_formation {
-  /* margin-left: 285px; */
-  /* text-align: center; */
-   /* float: left; */
+.column_gauche .field_node_formation {
+  margin-bottom: 10px;
+  /* page-break-inside: avoid; */
+  /* display: block; */
 }
-
 
 .field_node_formation {
   margin-bottom: 10px;

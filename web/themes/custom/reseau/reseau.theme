@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 
 function reseau_theme_suggestions_slick_alter(array &$suggestions, array $variables, $hook)
@@ -152,14 +153,25 @@ function reseau_preprocess_node(&$variables)
       $variables['content']['field_public_cible_complement']['#label_display'] = 'above';
       // }
       // dsm($node->nid->value);
-      if (($node->nid->value == '531') || ($node->nid->value == '268')) {
-      if ($node->hasField('field_fmt_image') && !$node->get('field_fmt_image')->isEmpty()) {
-        // dsm($variables['content']['field_fmt_image']['#weight']);
-        $variables['content']['field_fmt_image']['#weight'] = '2';
+      // if (($node->nid->value == '531') || ($node->nid->value == '268')) {
+      // if ($node->hasField('field_fmt_image') && !$node->get('field_fmt_image')->isEmpty()) {
+      //   // dsm($variables['content']['field_fmt_image']['#weight']);
+      //   $variables['content']['field_fmt_image']['#weight'] = '2';
+      // } else {
+   
+   
+      // }
+      // }
+
+      // Si il n'y a pas de fiche formation transférée, on remlace le lien par le PDF généré
+      if ($node->hasField('field_fiche_formation_pdf') && !$node->get('field_fiche_formation_pdf')->isEmpty()) {
+      
       } else {
-   
-   
-      }
+        
+       $front =  Url::fromRoute('<front>', [], ['absolute' => TRUE])->toString();
+       
+        // dsm($variables['content']['field_fiche_formation_pdf']['#markup'] = "<div class=\"field_fiche_formation\"><span class=\"file file--mime-application-pdf file--application-pdf\"><a class=\"btn btn-primary\" href=\"".$front."/entity_pdf/node/".$node->nid->value."/export_pdf\" target=\"_blank\">Télécharger la fiche</a></span></div>");
+        $variables['content']['field_fiche_formation_pdf']['#markup'] = "<div class=\"field_fiche_formation\"><span class=\"file file--mime-application-pdf file--application-pdf\"><a class=\"btn btn-primary\" href=\"".$front."/entity_pdf/node/".$node->nid->value."/export_pdf\" target=\"_blank\">Télécharger la fiche</a></span></div>";
       }
 
       break;
@@ -184,9 +196,9 @@ function reseau_preprocess_html(&$variables)
     }
     // dsm((int)$node->id());
     // dsm((int)$node->id() % 2);
-    if ((int)$node->id() % 2 == 0) {
+    // if ((int)$node->id() % 2 == 0) {
       $variables['attributes']['class'][] = 'page-node-verticale';
-    }
+    // }
 
   } else {
     $variables['attributes']['class'][] = 'page-no-node';

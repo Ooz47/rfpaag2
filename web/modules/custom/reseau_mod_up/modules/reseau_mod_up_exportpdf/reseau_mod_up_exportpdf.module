@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Url;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -11,7 +12,8 @@ use Drupal\views\ViewExecutable;
 /**
  * Implements hook_theme().
  */
-function reseau_mod_up_exportpdf_theme() {
+function reseau_mod_up_exportpdf_theme()
+{
   $theme['htmlpdf'] = [
     'base hook' => 'htmlpdf',
   ];
@@ -25,20 +27,42 @@ function reseau_mod_up_exportpdf_theme() {
 
 
 
-function reseau_mod_up_exportpdf_mpdf_config_alter(&$mpdf_config){
+function reseau_mod_up_exportpdf_mpdf_config_alter(&$mpdf_config)
+{
   // dsm($data);
   // $data['tempDir'] = \Drupal::service('file_system')->realpath(file_default_scheme() . "://temp_pdf_preview");
 
   // $mpdf_config['fontDir'] = __DIR__ . '/custom/font/directory';
   $mpdf_config['fontDir'][] = __DIR__ . '/fonts';
-  $mpdf_config['fontdata']["opensans"] = 
-     array(
-    'R' => "OpenSans-Regular.ttf",
-    'B' => "OpenSans-SemiBold.ttf",
-    'I' => "OpenSans-Italic.ttf",
-    'BI' => "OpenSans-SemiBoldItalic.ttf",
-);
+  $mpdf_config['fontdata']["opensans"] =
+    array(
+      'R' => "OpenSans-Regular.ttf",
+      'B' => "OpenSans-SemiBold.ttf",
+      'I' => "OpenSans-Italic.ttf",
+      'BI' => "OpenSans-SemiBoldItalic.ttf",
+    );
 
   // return dsm($mpdf_config);
   return $mpdf_config;
+}
+
+function reseau_mod_up_exportpdf_page_attachments_alter(array &$attachments)
+{
+  /*ajoute js que si sur une page formation*/
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof \Drupal\node\NodeInterface) {
+
+    $front =  Url::fromRoute('<front>', [], ['absolute' => TRUE])->toString();
+    if ($node->getType() == 'formation') {
+      $node_id = [
+        'id' => $node->id(),
+        'front' => $front,
+      ];
+
+      $attachments['#attached']['library'][] = 'reseau_mod_up_exportpdf/extra.user';
+      $attachments['#attached']['drupalSettings']['node'] = $node_id;
+    }
   }
+
+}

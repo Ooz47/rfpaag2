@@ -271,7 +271,7 @@ function reseau_mod_up_webform_entity_operation_alter(array &$operations, \Drupa
   // dsm($entity->get('webform_id')->entity);
   // dsm($entity->get('webform_id')->entity->get('id'));
   if ($entity->getEntityTypeId() == 'webform_submission') {
-    if ($entity->get('webform_id')->entity->get('id') == 'contact_greta_cfa_de_la_guadelou') {
+    if (($entity->get('webform_id')->entity->get('id') == 'contact_greta_cfa_de_la_guadelou') || ($entity->get('webform_id')->entity->get('id') == 'contact_cfapag')) {
 
       if (isset($operations['resend'])) {
         unset($operations['resend']);
