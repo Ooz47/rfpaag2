@@ -8,7 +8,7 @@
        
 
 $(context).find(".print").once("liens-sharing").each(function () {
-    var url = drupalSettings.node.front + "/entity_pdf/node/" + drupalSettings.node.id + "/export_pdf";
+    var url = drupalSettings.node.front + "entity_pdf/node/" + drupalSettings.node.id + "/export_pdf";
     $(this).attr("onclick", "window.open(\""+url+"\");");
 // console.log(this);
   });

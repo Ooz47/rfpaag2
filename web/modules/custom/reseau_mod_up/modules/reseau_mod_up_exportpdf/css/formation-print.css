@@ -55,7 +55,7 @@ h1,h2,h3,h4,h5,h6 {
   color: #fff;
   float: left;
   width: 250px;
- 
+ /* padding-bottom: 20px; */
 }
 
 .field_fmt_image  { margin-top: -12px;}
@@ -98,7 +98,14 @@ h1,h2,h3,h4,h5,h6 {
   /* page-break-inside: avoid; */
   /* display: block; */
 }
-
+.field_code_cpf,
+.field_formacode,
+.field_fmt_code_diplome,
+.field_fmt_code_rncp
+ {
+  float: left;
+  width: 50%;
+}
 .field_node_formation {
   margin-bottom: 10px;
 

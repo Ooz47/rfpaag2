@@ -41,7 +41,8 @@ function reseau_mod_up_exportpdf_mpdf_config_alter(&$mpdf_config)
       'I' => "OpenSans-Italic.ttf",
       'BI' => "OpenSans-SemiBoldItalic.ttf",
     );
-
+    // $mpdf->setAutoTopMargin = 'stretch';
+    // $mpdf_config['setAutoTopMargin'] = 'pad';
   // return dsm($mpdf_config);
   return $mpdf_config;
 }
