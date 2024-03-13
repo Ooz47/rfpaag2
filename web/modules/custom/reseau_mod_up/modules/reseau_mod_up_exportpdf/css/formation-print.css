@@ -325,3 +325,14 @@ article.structure-2 .h2 a
 article.structure-2 .column_droite a {
   color: #b8cf30;
 }
+
+table {
+  /* font-weight: inherit; */
+  font-size: 13px;
+  /* line-height: inherit; */
+
+}
+
+.column_gauche table {
+  color: #fff;
+}
