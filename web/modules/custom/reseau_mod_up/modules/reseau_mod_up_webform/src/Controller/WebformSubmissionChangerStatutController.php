@@ -92,6 +92,27 @@ class WebformSubmissionChangerStatutController extends ControllerBase {
          return $request->query->get('destination') ? new RedirectResponse($request->query->get('destination')) : [];
        }
 
+       public function marquerTraite(WebformSubmission $submission, Request $request) {
+
+        $timezone = new \DateTimeZone('America/Guadeloupe');
+        $now = DrupalDateTime::createFromTimestamp(time(),$timezone);
+        
+        // $now->setTimezone(new \DateTimeZone('America/Guadeloupe'));
+       //  dsm($submission->getElementData('traite_le'));
+       //  dsm($now);
+       //  dsm($now->format('Y-m-d\TH:i:sP'));
+       
+           $submission->setElementData('traite_le', $now->format('Y-m-d\TH:i:00P'));
+           $submission->setElementData('statut', 'Traité');
+           $submission->save();
+       
+           $this->messenger()->addMessage($this->t('Statut demande @serial modifié: Traité', [
+             '@serial' => $submission->serial(),
+           ]));
+       
+           return $request->query->get('destination') ? new RedirectResponse($request->query->get('destination')) : [];
+         }
+
   public function marquerEncours(WebformSubmission $submission, Request $request) {
    
        $submission->setElementData('traite_le', '');

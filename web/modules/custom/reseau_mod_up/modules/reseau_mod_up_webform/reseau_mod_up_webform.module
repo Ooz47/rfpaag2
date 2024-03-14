@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\views\ViewExecutable;
 use Drupal\webform\Element\WebformEntitySelect;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -130,34 +131,6 @@ function reseau_mod_up_webform_webform_submission_form_secteurs_ajax_callback(ar
   return $form['elements']['formations'];
 }
 
-//Modification des formulaire
-function reseau_mod_up_webform_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id)
-{
-  //   $user = \Drupal::currentUser();
-  //   if($user->hasPermission('gerer les revisions')){
-
-  //    /*Gestion accès form Add et edit */
-  //    $nodetype = array(
-  //     "node_actualite_form", "node_actualite_edit_form",
-  //     "node_evenement_form", "node_evenement_edit_form",
-  //     "node_formation_form", "node_formation_edit_form",
-  //     "node_page_form", "node_page_edit_form",
-  //     "node_structure_edit_form",
-  //   );
-
-  //   if (in_array($form_id, $nodetype)) {
-  //     $form['revision']['#access'] = TRUE;
-  //     // $form['status']['#access'] = TRUE;
-  //     $form['revision_log']['#access'] = TRUE;
-
-  //     // dsm($form);
-  // }
-
-
-  //   }
-
-}
-
 
 function reseau_mod_up_webform_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability)
 {
@@ -181,9 +154,9 @@ function reseau_mod_up_webform_menu_local_tasks_alter(&$data, $route_name, \Drup
  */
 function reseau_mod_up_webform_theme()
 {
-  $theme['webform_submission_information__contact_greta_cfa_de_la_guadelou'] = [
-    'base hook' => 'node',
-  ];
+  // $theme['webform_submission_information__contact_greta_cfa_de_la_guadelou'] = [
+  //   'base hook' => 'node',
+  // ];
 
   $theme['webform_submission__contact_greta_cfa_de_la_guadelou'] = [
     'base hook' => 'node',
@@ -197,10 +170,30 @@ function reseau_mod_up_webform_theme()
     'base hook' => 'field',
   ];
 
+    $theme['webform_submission_information__reseau'] = [
+    'base hook' => 'node'
+    ,
+  ];
+  $theme['webform_submission__contact_cfapag'] = [
+    'base hook' => 'node',
+  ];
+
+  $theme['webform_submission_form__contact_cfapag'] = [
+    'base hook' => 'node',
+  ];
+
   $theme['field__node__cfapag_field_fmt_candidature'] = [
     'base hook' => 'field',
   ];
   return $theme;
+}
+
+/* Ajout suggestion theme pour détails informations sur page vue et edit submission */
+function reseau_mod_up_webform_theme_suggestions_webform_submission_information_alter(array &$suggestions, array $variables)
+{
+
+  $suggestions[] = 'webform_submission_information__reseau';
+  dsm($suggestions);
 }
 
 /* 
@@ -242,8 +235,7 @@ function reseau_mod_up_webform_page_attachments_alter(array &$attachments)
 
   $webform = \Drupal::routeMatch()->getParameter('webform');
   if ($webform instanceof \Drupal\webform\WebformInterface) {
-    // dsm($webform);
-    // dsm($webform->get('id'));
+
     if ($webform->get('id') == 'pre_inscription_cfapag') {
     
       $attachments['#attached']['library'][] = 'reseau_mod_up_webform/extra.cfapag';
@@ -266,12 +258,8 @@ function reseau_mod_up_webform_entity_operation_alter(array &$operations, \Drupa
   //   // return;
   // }
 
-
-  // dsm($entity);
-  // dsm($entity->get('webform_id')->entity);
-  // dsm($entity->get('webform_id')->entity->get('id'));
   if ($entity->getEntityTypeId() == 'webform_submission') {
-    if (($entity->get('webform_id')->entity->get('id') == 'contact_greta_cfa_de_la_guadelou') || ($entity->get('webform_id')->entity->get('id') == 'contact_cfapag')) {
+    if (($entity->get('webform_id')->entity->get('id') == 'contact_greta_cfa_de_la_guadelou') || ($entity->get('webform_id')->entity->get('id') == 'contact_cfapag') ) {
 
       if (isset($operations['resend'])) {
         unset($operations['resend']);
@@ -354,6 +342,34 @@ function reseau_mod_up_webform_entity_operation(EntityInterface $submission)
           ]),
         ];
       }
+    }
+/* POUR FORMULAIRE CONTACT CFAPAG */
+    if ($submission->get('webform_id')->entity->get('id') == 'contact_cfapag') {
+
+      if ($submission->getElementData('statut') !== 'Traité') {
+
+        $operations['traite'] = [
+          'title' => t('Marquer comme Traité'),
+          'weight' => 15,
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraite', [
+            'submission' => $submission->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+          ]),
+        ];
+      }
+      if ($submission->getElementData('statut') !== 'En cours') {
+        $operations['encours'] = [
+          'title' => t('Marquer comme en cours'),
+          'weight' => 15,
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquerencours', [
+            'submission' => $submission->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+          ]),
+        ];
+      }
+
     }
   }
 
