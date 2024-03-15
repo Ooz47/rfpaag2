@@ -193,7 +193,7 @@ function reseau_mod_up_webform_theme_suggestions_webform_submission_information_
 {
 
   $suggestions[] = 'webform_submission_information__reseau';
-  dsm($suggestions);
+  // dsm($suggestions);
 }
 
 /* 
@@ -295,7 +295,7 @@ function reseau_mod_up_webform_entity_operation(EntityInterface $submission)
       if ($submission->getElementData('statut') !== 'Traité-formation') {
 
         $operations['traiteformation'] = [
-          'title' => t('Marquer comme Traité: Entré.e en formation'),
+          'title' => t('Marquer comme Traité : Entré.e en formation'),
           'weight' => 15,
           'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraiteformation', [
             'submission' => $submission->id(),
@@ -308,7 +308,7 @@ function reseau_mod_up_webform_entity_operation(EntityInterface $submission)
       if ($submission->getElementData('statut') !== 'Traité-attente') {
 
         $operations['traiteattente'] = [
-          'title' => t('Marquer comme Traité: En attente d’intégrer une formation'),
+          'title' => t('Marquer comme Traité : En attente d’intégrer une formation'),
           'weight' => 15,
           'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraiteattente', [
             'submission' => $submission->id(),
@@ -321,7 +321,7 @@ function reseau_mod_up_webform_entity_operation(EntityInterface $submission)
       if ($submission->getElementData('statut') !== 'Traité-orienté') {
 
         $operations['traiteoriente'] = [
-          'title' => t('Marquer comme Traité: Orienté.e vers une autre structure'),
+          'title' => t('Marquer comme Traité : Orienté.e vers une autre structure'),
           'weight' => 15,
           'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraiteoriente', [
             'submission' => $submission->id(),
@@ -331,11 +331,46 @@ function reseau_mod_up_webform_entity_operation(EntityInterface $submission)
         ];
       }
 
-      if ($submission->getElementData('statut') !== 'En cours') {
-        $operations['encours'] = [
-          'title' => t('Marquer comme en cours'),
+      if ($submission->getElementData('statut') !== 'Traité-autre') {
+
+        $operations['traiteautre'] = [
+          'title' => t('Marquer comme Traité : Autre demande'),
           'weight' => 15,
-          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquerencours', [
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquertraiteautredemande', [
+            'submission' => $submission->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+          ]),
+        ];
+      }
+
+      // if ($submission->getElementData('statut') !== 'En cours') {
+      //   $operations['encours'] = [
+      //     'title' => t('Marquer comme en cours'),
+      //     'weight' => 15,
+      //     'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquerencours', [
+      //       'submission' => $submission->id(),
+      //     ], [
+      //       'query' => \Drupal::destination()->getAsArray(),
+      //     ]),
+      //   ];
+      // }
+      if ($submission->getElementData('statut') !== 'Encours-entretien') {
+        $operations['encoursentretien'] = [
+          'title' => t('Marquer comme En cours : Transmis pour entretien'),
+          'weight' => 15,
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquerencourstransmisentretien', [
+            'submission' => $submission->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+          ]),
+        ];
+      }
+      if ($submission->getElementData('statut') !== 'Encours-inscription-infocol') {
+        $operations['encoursinfocol'] = [
+          'title' => t('Marquer comme En cours : Inscription en infocol'),
+          'weight' => 15,
+          'url' => Url::fromRoute('reseau_mod_up_webform.webform_submission_marquerencourstransmisinfocol', [
             'submission' => $submission->id(),
           ], [
             'query' => \Drupal::destination()->getAsArray(),
